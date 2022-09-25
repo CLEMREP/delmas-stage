@@ -16,13 +16,6 @@ class StudentFactory extends Factory
      */
     public function definition()
     {
-        return [
-            'address' => $this->faker->address,
-            'city' => $this->faker->city,
-            'zip' => $this->faker->postcode,
-            'mobility' => true,
-            'desire' => $this->faker->sentence(10),
-            'motivation' => $this->faker->sentence(16),
-        ];
+        return [];
     }
 }

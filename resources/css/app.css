@@ -1,3 +1,89 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+.form-input {
+    appearance: none;
+    border-width: 1px;
+    border-radius: 0.25rem;
+    padding-top: 0.5rem;
+    padding-right: 0.75rem;
+    padding-bottom: 0.5rem;
+    padding-left: 0.75rem;
+    line-height: 1.5;
+}
+
+.form-textarea {
+    appearance: none;
+    border-width: 1px;
+    border-radius: 0.25rem;
+    padding-top: 0.5rem;
+    padding-right: 0.75rem;
+    padding-bottom: 0.5rem;
+    padding-left: 0.75rem;
+    line-height: 1.5;
+}
+
+.form-select {
+    appearance: none;
+    background-repeat: no-repeat;
+    border-width: 1px;
+    border-radius: 0.25rem;
+    padding-top: 0.5rem;
+    padding-right: 2.5rem;
+    padding-bottom: 0.5rem;
+    padding-left: 0.75rem;
+    line-height: 1.5;
+    background-position: right 0.5rem center;
+    background-size: 1.5em 1.5em;
+}
+
+.profile-pic{
+    background: darkseagreen;
+    color: #eeeeee;
+    border-radius: 50%;
+    height: 48px;
+    width: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 1rem;
+}
+
+.border-purple-400 {
+    --border-opacity: 1;
+    border-color: #ac94fa;
+    border-color: rgba(172, 148, 250, var(--border-opacity));
+}
+
+.border-purple-500 {
+    --border-opacity: 1;
+    border-color: #9061f9;
+    border-color: rgba(144, 97, 249, var(--border-opacity));
+}
+
+.border-purple-600 {
+    --border-opacity: 1;
+    border-color: #7e3af2;
+    border-color: rgba(126, 58, 242, var(--border-opacity));
+}
+
+.border-purple-700 {
+    --border-opacity: 1;
+    border-color: #6c2bd9;
+    border-color: rgba(108, 43, 217, var(--border-opacity));
+}
+
+.border-purple-800 {
+    --border-opacity: 1;
+    border-color: #5521b5;
+    border-color: rgba(85, 33, 181, var(--border-opacity));
+}
+
+.border-purple-900 {
+    --border-opacity: 1;
+    border-color: #4a1d96;
+    border-color: rgba(74, 29, 150, var(--border-opacity));
+}
