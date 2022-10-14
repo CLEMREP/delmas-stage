@@ -21,6 +21,7 @@ return new class extends Migration
             $table->boolean('mobility')->default(false);
             $table->longText('desire')->nullable();
             $table->longText('motivation')->nullable();
+            $table->foreignId('promotion_id')->nullable();
         });
     }
 

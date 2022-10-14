@@ -6,9 +6,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\MorphOne;
 
-class Teacher extends Model
+class Serie extends Model
 {
     use HasFactory;
 
@@ -20,16 +19,16 @@ class Teacher extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'phone',
+        'name',
     ];
 
-    public function user(): MorphOne
+    public function promotions(): HasMany
     {
-        return $this->morphOne(User::class, 'userable');
+        return $this->hasMany(Promotion::class);
     }
 
-    public function promotions(): BelongsToMany
+    public function admins(): BelongsToMany
     {
-        return $this->belongsToMany(Promotion::class);
+        return $this->belongsToMany(Admin::class);
     }
 }
