@@ -3,7 +3,7 @@
 @if ($errors->any())
     <div {{ $attributes }}>
         <div class="font-medium text-red-600">
-            {{ __('Whoops! Something went wrong.') }}
+            {{ __('Attention! Il se pourrait que quelque chose ne tourne pas rond.') }}
         </div>
 
         <ul class="mt-3 list-disc list-inside text-sm text-red-600">

@@ -12,9 +12,11 @@
         <link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'>
         <link rel="icon" href="images/favicon.png" sizes="any">
         <!-- Scripts -->
-        @vite(['resources/css/app.css', 'resources/css/style.css', 'resources/js/app.js'])
+        @livewireStyles
+        @vite(['resources/css/app.css', 'resources/css/multiform.css', 'resources/css/style.css', 'resources/js/app.js'])
     </head>
     <body>
         {{ $slot }}
     </body>
+    @livewireScripts
 </html>
