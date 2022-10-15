@@ -4,11 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\MorphOne;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
-class Teacher extends Model
+class Promotion extends Model
 {
     use HasFactory;
 
@@ -20,16 +21,22 @@ class Teacher extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'phone',
+        'name',
+        'serie_id',
     ];
 
-    public function user(): MorphOne
+    public function serie(): BelongsTo
     {
-        return $this->morphOne(User::class, 'userable');
+        return $this->belongsTo(Serie::class);
     }
 
-    public function promotions(): BelongsToMany
+    public function students(): HasMany
     {
-        return $this->belongsToMany(Promotion::class);
+        return $this->hasMany(Student::class);
+    }
+
+    public function teachers(): BelongsToMany
+    {
+        return $this->belongsToMany(Teacher::class);
     }
 }

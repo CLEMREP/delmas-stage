@@ -17,27 +17,10 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        User::factory()->create();
-
-        $admin = Admin::factory()->create();
-        User::factory()->create(
-            [
-                'userable_type' => $admin::class,
-                'userable_id' => $admin->getKey(),
-            ]
-        );
-
-        $teacher = Teacher::factory()->create();
-        User::factory()->create(
-            [
-                'userable_type' => $teacher::class,
-                'userable_id' => $teacher->getKey(),
-            ]
-        );
-
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
+        $this->call([
+            SerieSeeder::class,
+            PromotionSeeder::class,
+            UserSeeder::class,
+        ]);
     }
 }
