@@ -2,12 +2,14 @@
 
 namespace Database\Factories;
 
+use App\Models\Contact;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Student>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Company>
  */
-class StudentFactory extends Factory
+class CompanyFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -17,12 +19,13 @@ class StudentFactory extends Factory
     public function definition()
     {
         return [
+            'name' => $this->faker->company(),
+            'phone' => $this->faker->phoneNumber(),
             'address' => $this->faker->address(),
             'city' => $this->faker->city(),
             'zip' => $this->faker->postcode(),
-            'desire' => $this->faker->sentence(10),
-            'motivation' => $this->faker->sentence(20),
-            'mobility' => false,
+            'student_id' => User::factory(),
+            'contact_id' => Contact::factory(),
         ];
     }
 }

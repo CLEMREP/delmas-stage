@@ -8,6 +8,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 
+/**
+ * @property string $phone
+ */
 class Teacher extends Model
 {
     use HasFactory;
@@ -31,5 +34,10 @@ class Teacher extends Model
     public function promotions(): BelongsToMany
     {
         return $this->belongsToMany(Promotion::class);
+    }
+
+    public function goals(): HasMany
+    {
+        return $this->hasMany(Goal::class);
     }
 }

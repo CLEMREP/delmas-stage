@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\Serie;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class SerieSeeder extends Seeder
@@ -17,8 +16,7 @@ class SerieSeeder extends Seeder
     {
         $series = ['SIO', 'COM', 'CI', 'TOUR'];
 
-        foreach ($series as $serie)
-        {
+        foreach ($series as $serie) {
             Serie::factory()->create(['name' => $serie]);
         }
     }

@@ -5,15 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 
 /**
  * @property string $address
  * @property string $city
  * @property string $zip
- * @property bool $desire
- * @property string $mobility
+ * @property string $desire
+ * @property bool $mobility
  * @property string $motivation
  */
 class Student extends Model
@@ -42,7 +42,7 @@ class Student extends Model
      * @var array<string, string>
      */
     protected $casts = [
-        'desire' => 'boolean',
+        'mobility' => 'boolean',
     ];
 
     public function user(): MorphOne
@@ -53,5 +53,20 @@ class Student extends Model
     public function promotion(): BelongsTo
     {
         return $this->belongsTo(Promotion::class);
+    }
+
+    public function companies(): HasMany
+    {
+        return $this->hasMany(Company::class);
+    }
+
+    public function contacts(): HasMany
+    {
+        return $this->hasMany(Contact::class);
+    }
+
+    public function procedures(): HasMany
+    {
+        return $this->hasMany(Procedure::class);
     }
 }

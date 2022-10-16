@@ -18,11 +18,9 @@ class PromotionSeeder extends Seeder
         $series = Serie::all();
         $promotions = ['SIO1', 'SIO2', 'COM1', 'COM2', 'CI1', 'CI2', 'TOUR1', 'TOUR2'];
 
-
-        foreach ($series as $key => $serie)
-        {
+        foreach ($series as $key => $serie) {
             for ($j = $key * 2, $i = 0; $i < 2; $i++) {
-                Promotion::factory()->create(['name' => $promotions[$j+$i], 'serie_id' => $serie->getKey()]);
+                Promotion::factory()->create(['name' => $promotions[$j + $i], 'serie_id' => $serie->getKey()]);
             }
         }
     }
