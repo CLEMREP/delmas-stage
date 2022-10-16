@@ -4,13 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-/**
- * @property string $name
- */
-class Serie extends Model
+class Job extends Model
 {
     use HasFactory;
 
@@ -25,13 +21,8 @@ class Serie extends Model
         'name',
     ];
 
-    public function promotions(): HasMany
+    public function contacts(): HasMany
     {
-        return $this->hasMany(Promotion::class);
-    }
-
-    public function admins(): BelongsToMany
-    {
-        return $this->belongsToMany(Admin::class);
+        return $this->hasMany(Contact::class);
     }
 }

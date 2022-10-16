@@ -4,13 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\MorphOne;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-/**
- * @property bool $isSuperAdmin
- */
-class Admin extends Model
+class Goal extends Model
 {
     use HasFactory;
 
@@ -22,7 +18,9 @@ class Admin extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'isSuperAdmin',
+        'content',
+        'created_at',
+        'teacher_id',
     ];
 
     /**
@@ -31,16 +29,11 @@ class Admin extends Model
      * @var array<string, string>
      */
     protected $casts = [
-        'isSuperAdmin' => 'boolean',
+        'created_at' => 'date',
     ];
 
-    public function user(): MorphOne
+    public function teacher(): BelongsTo
     {
-        return $this->morphOne(User::class, 'userable');
-    }
-
-    public function series(): BelongsToMany
-    {
-        return $this->belongsToMany(Serie::class);
+        return $this->belongsTo(Teacher::class);
     }
 }
