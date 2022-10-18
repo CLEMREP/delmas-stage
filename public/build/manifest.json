@@ -1,0 +1,27 @@
+{
+  "resources/js/app.js": {
+    "file": "assets/app.05102ec3.js",
+    "src": "resources/js/app.js",
+    "isEntry": true
+  },
+  "resources/js/init-alpine.js": {
+    "file": "assets/init-alpine.1fa10cd9.js",
+    "src": "resources/js/init-alpine.js",
+    "isEntry": true
+  },
+  "resources/css/style.css": {
+    "file": "assets/style.c1a1ba10.css",
+    "src": "resources/css/style.css",
+    "isEntry": true
+  },
+  "resources/css/app.css": {
+    "file": "assets/app.624d2b9c.css",
+    "src": "resources/css/app.css",
+    "isEntry": true
+  },
+  "resources/css/tailwind.css": {
+    "file": "assets/tailwind.dd54af8c.css",
+    "src": "resources/css/tailwind.css",
+    "isEntry": true
+  }
+}
