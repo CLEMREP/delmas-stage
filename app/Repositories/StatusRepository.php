@@ -16,6 +16,9 @@ class StatusRepository
         return $this->model->all();
     }
 
+    /**
+     * @param  array<string>  $data
+     */
     public function findStatusById(array $data): Status|null
     {
         return $this->model->all()

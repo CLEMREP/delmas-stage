@@ -9,8 +9,8 @@ use App\Models\Student;
 use App\Models\User;
 use App\Repositories\ContactRepository;
 use App\Repositories\JobRepository;
+use App\Repositories\StudentRepository;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
@@ -19,7 +19,9 @@ class ContactController extends Controller
     public function __construct(
         private ContactRepository $contactRepository,
         private JobRepository $jobRepository,
-    ){}
+        private StudentRepository $studentRepository,
+    ) {
+    }
 
     public function index(): View
     {
@@ -52,29 +54,32 @@ class ContactController extends Controller
         /** @var array $validated */
         $validated = $request->validated();
 
+        /** @var int $jobId */
+        $jobId = $validated['job_id'];
+
         $validated['student_id'] = $student->getKey();
 
-        if (!is_null($this->jobRepository->findJobById($validated))) {
+        if (! is_null($this->jobRepository->findJobById($jobId))) {
             $this->contactRepository->createContact($validated);
+
             return redirect(route('student.contacts.index'))->with('success', 'Votre contact a bien été crée !');
         } else {
             return redirect(route('student.contacts.index'))->with('errors', 'La fonction de votre contact est introuvable !');
         }
     }
 
-
     public function show(Contact $contact): View
     {
         /** @var Student $student */
         $student = Auth::user()?->userable;
 
-        abort_if($student->contacts()
-            ->where('id', $contact->getKey())
-            ->get()
-            ->isEmpty(), 404);
+        /** @var int $contactId */
+        $contactId = $contact->getKey();
+
+        abort_if($this->studentRepository->checkStudentHasThisContact($student, $contactId), 404);
 
         return view('delmas.student.contacts.show', [
-            'title' => 'Fiche contact de ' . $contact->firstname . ' ' . $contact->lastname,
+            'title' => 'Fiche contact de '.$contact->firstname.' '.$contact->name,
             'contact' => $contact,
         ]);
     }
@@ -84,15 +89,15 @@ class ContactController extends Controller
         /** @var Student $student */
         $student = Auth::user()?->userable;
 
+        /** @var int $contactId */
+        $contactId = $contact->getKey();
+
         $jobs = $this->jobRepository->getAllJobs();
 
-        abort_if($student->contacts()
-            ->where('id', $contact->getKey())
-            ->get()
-            ->isEmpty(), 404);
+        abort_if($this->studentRepository->checkStudentHasThisContact($student, $contactId), 404);
 
         return view('delmas.student.contacts.edit', [
-            'title' => 'Édition de ' . $contact->firstname . ' ' . $contact->lastname,
+            'title' => 'Édition de '.$contact->firstname.' '.$contact->name,
             'contact' => $contact,
             'jobs' => $jobs,
         ]);
@@ -106,16 +111,16 @@ class ContactController extends Controller
         /** @var Student $student */
         $student = Auth::user()?->userable;
 
+        /** @var int $contactId */
+        $contactId = $contact->getKey();
+
         $validated['student_id'] = $student->getKey();
 
-        abort_if($student->contacts()
-            ->where('id', $contact->getKey())
-            ->get()
-            ->isEmpty(), 404);
+        abort_if($this->studentRepository->checkStudentHasThisContact($student, $contactId), 404);
 
         $this->contactRepository->updateContact($validated, $contact);
 
-        return redirect(route('student.contacts.index'))->with('success',  $contact->firstname . ' ' . $contact->name . ' a bien été modifiée !');
+        return redirect(route('student.contacts.index'))->with('success', $contact->firstname.' '.$contact->name.' a bien été modifiée !');
     }
 
     public function destroy(Contact $contact): RedirectResponse
@@ -123,13 +128,13 @@ class ContactController extends Controller
         /** @var Student $student */
         $student = Auth::user()?->userable;
 
-        abort_if($student->contacts()
-            ->where('id', $contact->getKey())
-            ->get()
-            ->isEmpty(), 404);
+        /** @var int $contactId */
+        $contactId = $contact->getKey();
+
+        abort_if($this->studentRepository->checkStudentHasThisContact($student, $contactId), 404);
 
         $this->contactRepository->deleteContact($contact);
 
-        return redirect(route('student.contacts.index'))->with('success', 'Le contact ' . $contact->firstname . ' ' . $contact->name . ' a bien été supprimée !');
+        return redirect(route('student.contacts.index'))->with('success', 'Le contact '.$contact->firstname.' '.$contact->name.' a bien été supprimée !');
     }
 }

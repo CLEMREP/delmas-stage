@@ -49,7 +49,7 @@
                                 {{ $goal->created_at->format('d-m-Y') }}
                             </td>
                             <td class="px-4 py-3 text-sm text-right">
-                                {{ $goal->user->firstname . ' ' . $goal->user->name }}
+                                {{ $goal->teacher->user->firstname . ' ' . $goal->teacher->user->lastname }}
                             </td>
                         </tr>
                     @endforeach

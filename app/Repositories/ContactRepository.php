@@ -4,7 +4,6 @@ namespace App\Repositories;
 
 use App\Models\Contact;
 use App\Models\Student;
-use App\Models\User;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 
@@ -14,6 +13,9 @@ class ContactRepository
     {
     }
 
+    /**
+     * @param  array<string, mixed>  $data
+     */
     public function createContact(array $data): Contact
     {
         return $this->model->create([
@@ -23,9 +25,12 @@ class ContactRepository
             'email' => $data['email'],
             'job_id' => $data['job_id'],
             'student_id' => $data['student_id'],
-            ]);
+        ]);
     }
 
+    /**
+     * @param  array<string>  $data
+     */
     public function updateContact(array $data, Contact $contact): bool
     {
         return $contact->update([
@@ -48,7 +53,7 @@ class ContactRepository
         return $student->contacts()->paginate(5);
     }
 
-    public function deleteContact(Contact $contact): bool
+    public function deleteContact(Contact $contact): bool|null
     {
         return $contact->delete();
     }

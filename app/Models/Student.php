@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 
 /**
+ * @property string $phone
  * @property string $address
  * @property string $city
  * @property string $zip
@@ -28,6 +29,7 @@ class Student extends Model
      * @var array<int, string>
      */
     protected $fillable = [
+        'phone',
         'address',
         'city',
         'zip',

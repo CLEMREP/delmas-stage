@@ -5,7 +5,6 @@ namespace App\Repositories;
 use App\Models\Procedure;
 use App\Models\Promotion;
 use App\Models\Student;
-use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 
@@ -15,7 +14,10 @@ class ProcedureRepository
     {
     }
 
-    public function createProcedure(array $data):  Procedure
+    /**
+     * @param  array<string>  $data
+     */
+    public function createProcedure(array $data): Procedure
     {
         return $this->model->create([
             'company_id' => $data['company_id'],
@@ -24,12 +26,15 @@ class ProcedureRepository
             'date' => $data['date'],
             'resend' => $data['resend'],
             'date_resend' => $data['date_resend'],
-            'user_id' => $data['user_id'],
+            'student_id' => $data['student_id'],
             'promotion_id' => $data['promotion_id'],
         ]);
     }
 
-    public function updateProcedure(Procedure $procedure, array $data):  bool|null
+    /**
+     * @param  array<string>  $data
+     */
+    public function updateProcedure(Procedure $procedure, array $data): bool|null
     {
         return $procedure->update([
             'company_id' => $data['company_id'],
@@ -38,11 +43,11 @@ class ProcedureRepository
             'date' => $data['date'],
             'resend' => $data['resend'],
             'date_resend' => $data['date_resend'],
-            'user_id' => $data['user_id'],
+            'student_id' => $data['student_id'],
         ]);
     }
 
-    public function deleteProcedure(Procedure $procedure):  bool|null
+    public function deleteProcedure(Procedure $procedure): bool|null
     {
         return $procedure->delete();
     }

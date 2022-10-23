@@ -16,6 +16,9 @@ class FormatRepository
         return $this->model->all();
     }
 
+    /**
+     * @param  array<string>  $data
+     */
     public function findFormatById(array $data): Format|null
     {
         return $this->model->all()

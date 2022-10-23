@@ -32,7 +32,7 @@ class StudentSeeder extends Seeder
                 ]
             );
 
-            $ramdon = random_int(3, 10);
+            $ramdon = random_int(15, 30);
 
             for ($j = 0; $j <= $ramdon; $j++) {
                 $contact = Contact::factory([

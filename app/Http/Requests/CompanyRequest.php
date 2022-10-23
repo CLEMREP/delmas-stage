@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ContactRequest extends FormRequest
+class CompanyRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -15,15 +15,11 @@ class ContactRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'min:3', 'max:128'],
-            'firstname' => ['required', 'string', 'min:3', 'max:128'],
             'phone' => ['regex:/^(?:(?:\+|00)33|0)\s*[1-9](?:[\s.-]*\d{2}){4}$/'],
-            'email' => [
-                'required',
-                'string',
-                'email',
-                'max:255',
-            ],
-            'job_id' => ['required', 'integer'],
+            'address' => ['required', 'string'],
+            'city' => ['required', 'string'],
+            'zip' => 'required|regex:/^[0-9]{5}(?:-[0-9]{4})?$/',
+            'contact_id' => ['required', 'integer'],
         ];
     }
 
@@ -39,7 +35,6 @@ class ContactRequest extends FormRequest
             '*.string' => 'Le champ doit être une chaîne de caractères.',
             'zip.regex' => 'Le code postale doit être au bon format (XXXXX).',
             'phone.regex' => 'Le téléphone doit être au bon format (XX XX XX XX XX XX).',
-            'email.email' => 'L\'e-mail doit être dans un format valide (ex: test@test.com)',
         ];
     }
 }

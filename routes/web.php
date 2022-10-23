@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Student\Account\AccountController as StudentAccountController;
+use App\Http\Controllers\Student\Company\CompanyController as StudentCompanyController;
 use App\Http\Controllers\Student\Contact\ContactController as StudentContactController;
 use App\Http\Controllers\Student\Goal\GoalController;
 use App\Http\Controllers\Student\HomeController;
@@ -37,13 +39,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
         });
 
         Route::name('companies.')->group(function () {
-            Route::get('/mes-entreprises', [CompanyController::class, 'index'])->name('index');
-            Route::get('/mes-entreprises/creation', [CompanyController::class, 'create'])->name('create');
-            Route::post('/mes-entreprises/creation', [CompanyController::class, 'store'])->name('store');
-            Route::post('/mes-entreprises/supprimer/{company}', [CompanyController::class, 'destroy'])->name('destroy');
-            Route::get('/mes-entreprises/fiche/{company}', [CompanyController::class, 'show'])->name('show');
-            Route::get('/mes-entreprises/edition/{company}', [CompanyController::class, 'edit'])->name('edit');
-            Route::post('/mes-entreprises/edition/{company}', [CompanyController::class, 'update'])->name('update');
+            Route::get('/mes-entreprises', [StudentCompanyController::class, 'index'])->name('index');
+            Route::get('/mes-entreprises/creation', [StudentCompanyController::class, 'create'])->name('create');
+            Route::post('/mes-entreprises/creation', [StudentCompanyController::class, 'store'])->name('store');
+            Route::post('/mes-entreprises/supprimer/{company}', [StudentCompanyController::class, 'destroy'])->name('destroy');
+            Route::get('/mes-entreprises/fiche/{company}', [StudentCompanyController::class, 'show'])->name('show');
+            Route::get('/mes-entreprises/edition/{company}', [StudentCompanyController::class, 'edit'])->name('edit');
+            Route::post('/mes-entreprises/edition/{company}', [StudentCompanyController::class, 'update'])->name('update');
         });
 
         Route::name('contacts.')->group(function () {
@@ -55,15 +57,16 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::get('/mes-contacts/edition/{contact}', [StudentContactController::class, 'edit'])->name('edit');
             Route::post('/mes-contacts/edition/{contact}', [StudentContactController::class, 'update'])->name('update');
         });
+
+        Route::name('account.')->group(function () {
+            Route::get('/mon-compte', [StudentAccountController::class, 'edit'])->name('edit');
+            Route::post('/mon-compte', [StudentAccountController::class, 'update'])->name('update');
+        });
     });
 
     Route::get('/objectifs', [GoalController::class, 'index'])->name('goals.index');
 
     Route::get('/message', [MessageController::class, 'index'])->name('message.index');
-    Route::post('/message', [MessageController::class, 'send'])->name('message.send');
-
-    Route::get('/mon-compte', [AccountController::class, 'edit'])->name('account.edit');
-    Route::post('/mon-compte', [AccountController::class, 'update'])->name('account.update');
 });
 
 Route::get('/dashboard', function () {

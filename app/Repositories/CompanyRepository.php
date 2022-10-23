@@ -5,7 +5,7 @@ namespace App\Repositories;
 use App\Models\Company;
 use App\Models\Contact;
 use App\Models\Student;
-use App\Models\User;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 class CompanyRepository
@@ -14,6 +14,9 @@ class CompanyRepository
     {
     }
 
+    /**
+     * @param  array<string>  $data
+     */
     public function createCompany(array $data, Student $student): Company
     {
         return $this->model->create([
@@ -27,6 +30,9 @@ class CompanyRepository
         ]);
     }
 
+    /**
+     * @param  array<string>  $data
+     */
     public function updateCompany(array $data, Company $company, Student $student): bool|null
     {
         return $company->update([
@@ -48,7 +54,12 @@ class CompanyRepository
         return $contact;
     }
 
-    public function getCompaniesOfStudent(Student $student): LengthAwarePaginator
+    public function getCompaniesOfStudent(Student $student): Collection
+    {
+        return $student->companies()->get();
+    }
+
+    public function getCompaniesOfStudentPaginated(Student $student): LengthAwarePaginator
     {
         return $student->companies()->paginate(5);
     }
@@ -60,7 +71,7 @@ class CompanyRepository
 
     public function companyBelongsToStudent(Student $student, Company $company): bool
     {
-        return $student->companies()
+        return $student->companies() /** @phpstan-ignore-line */
             ->where('id', $company->getKey())
             ->get()
             ->isEmpty();

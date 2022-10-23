@@ -18,6 +18,9 @@ class GoalRepository
         return $this->model->newQuery()->paginate(5);
     }
 
+    /**
+     * @param  array<string>  $data
+     */
     public function createGoal(array $data, Teacher $teacher): Goal
     {
         return $this->model->create([
@@ -27,6 +30,9 @@ class GoalRepository
         ]);
     }
 
+    /**
+     * @param  array<string>  $data
+     */
     public function updateGoal(array $data, Goal $goal): bool|null
     {
         return $goal->update([

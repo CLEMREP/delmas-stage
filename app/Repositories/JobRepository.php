@@ -16,10 +16,10 @@ class JobRepository
         return $this->model->all();
     }
 
-    public function findJobById(array $data): Job|null
+    public function findJobById(int $jobId): Job|null
     {
         return $this->model->all()
-            ->where('id', $data['job_id'])
+            ->where('id', $jobId)
             ->first();
     }
 }

@@ -7,6 +7,7 @@ export default defineConfig({
             input: [
                 'resources/css/app.css',
                 'resources/css/tailwind.css',
+                'resources/css/multiform.css',
                 'resources/css/style.css',
                 'resources/js/app.js',
                 'resources/js/init-alpine.js',
