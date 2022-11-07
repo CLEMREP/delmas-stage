@@ -42,4 +42,9 @@ class Promotion extends Model
     {
         return $this->belongsToMany(Teacher::class);
     }
+
+    public function goals(): HasMany
+    {
+        return $this->hasMany(Goal::class);
+    }
 }

@@ -21,7 +21,7 @@
     <h2 class="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200">
         Messages
     </h2>
-    <form action="{{ route('message.send') }}" method="POST">
+    <form action="" method="POST">
     @csrf
     <label class="block mt-4 text-sm mb-4">
         <span class="text-gray-700 dark:text-gray-400">

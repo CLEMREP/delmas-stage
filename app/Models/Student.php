@@ -16,6 +16,12 @@ use Illuminate\Database\Eloquent\Relations\MorphOne;
  * @property string $desire
  * @property bool $mobility
  * @property string $motivation
+ * @property int $promotion_id
+ * @property User $user
+ * @property Promotion $promotion
+ * @property Company $companies
+ * @property Contact $contacts
+ * @property Procedure $procedures
  */
 class Student extends Model
 {
@@ -36,6 +42,7 @@ class Student extends Model
         'desire',
         'mobility',
         'motivation',
+        'promotion_id',
     ];
 
     /**
@@ -44,8 +51,13 @@ class Student extends Model
      * @var array<string, string>
      */
     protected $casts = [
+        'promotion_id' => 'integer',
         'mobility' => 'boolean',
     ];
+
+    ////////////////
+    /// RELATIONSHIPS
+    ///////////////
 
     public function user(): MorphOne
     {
@@ -70,5 +82,14 @@ class Student extends Model
     public function procedures(): HasMany
     {
         return $this->hasMany(Procedure::class);
+    }
+
+    ////////////////
+    /// CUSTOM
+    ///////////////
+
+    public function fullname(): string
+    {
+        return $this->user->firstname . ' ' . $this->user->lastname;
     }
 }

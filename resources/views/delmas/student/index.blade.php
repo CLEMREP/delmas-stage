@@ -7,7 +7,7 @@
 
     @if($goals->count() > 0)
         <a class="flex items-center justify-between p-4 mb-8 text-sm font-semibold text-purple-100 bg-purple-600 rounded-lg shadow-md focus:outline-none focus:shadow-outline-purple"
-           href="">
+           href="{{ route('student.goals.index') }}">
             <div class="flex items-center">
                 <svg class="w-5 h-5 mr-2"
                      fill="currentColor"
@@ -37,7 +37,7 @@
     <!-- New Table -->
     <div class="w-full overflow-hidden rounded-lg shadow-xs">
         <div class="w-full overflow-x-auto">
-            @component('delmas.components.proceduresTabs', ['procedures' => $procedures])
+            @component('delmas.student.components.proceduresTabs', ['procedures' => $procedures])
             @endcomponent
         </div>
     </div>

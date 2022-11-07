@@ -4,6 +4,9 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Models\Admin;
+use App\Models\Teacher;
+use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -32,7 +35,16 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->intended(RouteServiceProvider::HOME);
+        /** @var User $user */
+        $user = Auth::user();
+
+        $route = match($user->userable_type) {
+            Admin::class => 'un',
+            Teacher::class => 'teacher.index',
+            default => 'student.index',
+        };
+
+        return redirect()->route($route);
     }
 
     /**

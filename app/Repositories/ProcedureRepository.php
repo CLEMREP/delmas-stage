@@ -62,14 +62,49 @@ class ProcedureRepository
         return $student->procedures()->paginate(5);
     }
 
-    public function getAllProcedures(): LengthAwarePaginator
+    public function allPaginated(): LengthAwarePaginator
     {
         return $this->model->newQuery()->paginate(5);
     }
 
-    public function getAllProceduresWithPromotion(Promotion $promotion): LengthAwarePaginator
+    public function getAllProceduresOfPromotionsPaginated(Collection $promotions, int $perPage): LengthAwarePaginator
     {
-        return $this->model->newQuery()->where('promotion_id', $promotion->getKey())->paginate(5);
+        $procedures = $this->getAllProceduresOfPromotions($promotions);
+        $currentPage = request("page") ?? 1;
+
+        return new LengthAwarePaginator(
+            $procedures->forPage($currentPage, $perPage),
+            $procedures->count(),
+            $perPage,
+            $currentPage,
+            [
+                'path' => request()->url(),
+                'query' => request()->query(),
+            ]
+        );
+    }
+
+    public function getAllProceduresOfPromotions(Collection $promotions): \Illuminate\Support\Collection
+    {
+        $procedures = new Collection();
+
+        foreach ($promotions as $promotion)
+        {
+            foreach ($promotion->students as $student)
+            {
+                foreach ($student->procedures as $procedure)
+                {
+                    $procedures->add($procedure);
+                }
+            }
+        }
+
+        return $procedures;
+    }
+
+    public function getAllProceduresOfPromotionsWithStatus(Collection $promotions, int $statusId): \Illuminate\Support\Collection
+    {
+        return $this->getAllProceduresOfPromotions($promotions)->where('status_id', $statusId);
     }
 
     public function countAllProcedures(): int

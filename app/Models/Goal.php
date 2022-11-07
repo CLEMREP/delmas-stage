@@ -2,10 +2,17 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/**
+ * @property string $content
+ * @property Carbon $created_at
+ * @property int $promotion_id
+ * @property Promotion $promotion
+ */
 class Goal extends Model
 {
     use HasFactory;
@@ -20,7 +27,7 @@ class Goal extends Model
     protected $fillable = [
         'content',
         'created_at',
-        'teacher_id',
+        'promotion_id'
     ];
 
     /**
@@ -32,8 +39,8 @@ class Goal extends Model
         'created_at' => 'date',
     ];
 
-    public function teacher(): BelongsTo
+    public function promotion(): BelongsTo
     {
-        return $this->belongsTo(Teacher::class);
+        return $this->belongsTo(Promotion::class);
     }
 }

@@ -9,7 +9,7 @@ use App\Repositories\ProcedureRepository;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
-class HomeController extends Controller
+class StudentController extends Controller
 {
     public function __construct(
         private ProcedureRepository $procedureRepository,
@@ -25,7 +25,7 @@ class HomeController extends Controller
         return view('delmas.student.index',
             [
                 'title' => 'Tableau de bord',
-                'goals' => $this->goalRepository->getAllGoals(),
+                'goals' => $this->goalRepository->allPaginated(),
                 'procedures' => $this->procedureRepository->getProceduresOfStudentPaginated($student),
                 'countProcedures' => $this->procedureRepository->getProceduresOfStudent($student)->count(),
                 'waitingProcedures' => $this->procedureRepository->countProceduresOfStudentWithStatus($student, 1),

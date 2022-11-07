@@ -30,6 +30,7 @@ class StudentRepository
 
         $studentAttributes = [
             'phone' => $data['phone'] ?? '',
+            'promotion_id' => $data['promotion_id'] ?? '',
             'zip' => $data['zip'] ?? '',
             'city' => $data['city'] ?? '',
             'address' => $data['address'] ?? '',
@@ -38,7 +39,7 @@ class StudentRepository
             'mobility' => $data['mobility'] ?? true,
         ];
 
-        if (! empty($data['password'])) {
+        if (!empty($data['password'])) {
             $attributes['password'] = Hash::make($data['password']);
         }
 

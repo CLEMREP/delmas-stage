@@ -23,7 +23,7 @@ class StudentSeeder extends Seeder
     {
         $job = Job::all()->random();
 
-        for ($i = 0; $i <= 10; $i++) {
+        for ($i = 0; $i <= 30; $i++) {
             $student = Student::factory()->create();
             User::factory()->create(
                 [
@@ -32,7 +32,7 @@ class StudentSeeder extends Seeder
                 ]
             );
 
-            $ramdon = random_int(15, 30);
+            $ramdon = random_int(5, 15);
 
             for ($j = 0; $j <= $ramdon; $j++) {
                 $contact = Contact::factory([

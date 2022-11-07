@@ -13,12 +13,36 @@ class UserResource extends JsonResource
     /** @var User */
     public $resource;
 
-    public function toArray($request): JsonResource
+    public function toArray($request): array
     {
-        return match ($this->resource->userable::class) { // @phpstan-ignore-line
-            Admin::class => AdminResource::make($this->resource),
-            Teacher::class => TeacherResource::make($this->resource),
-            Student::class => StudentResource::make($this->resource),
-        };
+        if ($this->resource->userable::class == Admin::class)
+        {
+            return [
+                'id' => $this->resource->getKey(),
+                'email' => $this->resource->email,
+                'name' => $this->resource->name,
+                'isSuperAdmin' => $this->resource->userable->isSuperAdmin,
+            ];
+        }
+
+        if ($this->resource->userable::class == Teacher::class)
+        {
+            return [
+                'id' => $this->resource->getKey(),
+                'email' => $this->resource->email,
+                'name' => $this->resource->name,
+                'phone' => $this->resource->userable->phone,
+            ];
+        }
+
+
+        return [
+            'id' => $this->resource->getKey(),
+            'email' => $this->resource->email,
+            'name' => $this->resource->name,
+            'address' => $this->resource->userable->address,
+            'city' => $this->resource->userable->city,
+            'zip' => $this->resource->userable->zip,
+        ];
     }
 }

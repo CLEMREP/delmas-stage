@@ -18,6 +18,7 @@ class AdminSeeder extends Seeder
         $admin = Admin::factory()->create();
         User::factory()->create(
             [
+                'email' => 'admin@admin.fr',
                 'userable_type' => $admin::class,
                 'userable_id' => $admin->getKey(),
             ]

@@ -16,8 +16,8 @@ return new class extends Migration
         Schema::create('goals', function (Blueprint $table) {
             $table->id();
             $table->string('content');
-            $table->foreignId('teacher_id')->constrained()->onDelete('cascade');
             $table->date('created_at');
+            $table->foreignId('promotion_id')->constrained()->onDelete('cascade');
         });
     }
 

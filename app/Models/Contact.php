@@ -25,6 +25,10 @@ class Contact extends Model
         'student_id',
     ];
 
+    ////////////////
+    /// RELATIONSHIPS
+    ///////////////
+
     public function companies(): HasMany
     {
         return $this->hasMany(Company::class);
@@ -38,5 +42,14 @@ class Contact extends Model
     public function job(): BelongsTo
     {
         return $this->belongsTo(Job::class);
+    }
+
+    ////////////////
+    /// CUSTOM
+    ///////////////
+
+    public function fullname(): string
+    {
+        return $this->firstname . ' ' . $this->name;
     }
 }

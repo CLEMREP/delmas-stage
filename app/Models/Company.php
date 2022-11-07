@@ -26,6 +26,10 @@ class Company extends Model
         'contact_id',
     ];
 
+    ////////////////
+    /// RELATIONSHIPS
+    ///////////////
+
     public function contact(): BelongsTo
     {
         return $this->belongsTo(Contact::class);
@@ -39,5 +43,14 @@ class Company extends Model
     public function procedure(): HasOne
     {
         return $this->hasOne(Procedure::class);
+    }
+
+    ////////////////
+    /// CUSTOM
+    ///////////////
+
+    public function completeAddress(): string
+    {
+        return $this->address . ', ' . $this->zip . ', ' . $this->city;
     }
 }

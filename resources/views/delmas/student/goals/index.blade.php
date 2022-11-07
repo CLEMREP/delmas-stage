@@ -3,7 +3,7 @@
 @section('content')
     @if($goals->count() > 0)
         <h2 class="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200">
-            Objectif
+            Objectif en cours
         </h2>
         <div class="flex items-center justify-between p-4 mb-8 text-sm font-semibold text-purple-100 bg-purple-600 rounded-lg shadow-md focus:outline-none focus:shadow-outline-purple">
             <div class="flex items-center">
@@ -36,7 +36,6 @@
                     <tr class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
                         <th class="px-4 py-3">Objectif</th>
                         <th class="px-4 py-3">Date</th>
-                        <th class="px-4 py-3 text-right">Auteur</th>
                     </tr>
                     </thead>
                     <tbody class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
@@ -48,9 +47,6 @@
                             <td class="px-4 py-3">
                                 {{ $goal->created_at->format('d-m-Y') }}
                             </td>
-                            <td class="px-4 py-3 text-sm text-right">
-                                {{ $goal->teacher->user->firstname . ' ' . $goal->teacher->user->lastname }}
-                            </td>
                         </tr>
                     @endforeach
                     </tbody>
@@ -61,8 +57,6 @@
                     <tr class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
                         <th class="px-4 py-3">Objectif</th>
                         <th class="px-4 py-3">Date</th>
-                        <th class="px-4 py-3">Auteur</th>
-                        <th class="px-4 py-3 text-right">Actions</th>
                     </tr>
                     </thead>
                 </table>
