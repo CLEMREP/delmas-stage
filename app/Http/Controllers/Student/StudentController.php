@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Student;
 
 use App\Http\Controllers\Controller;
 use App\Models\Student;
+use App\Models\User;
 use App\Repositories\GoalRepository;
 use App\Repositories\ProcedureRepository;
 use Illuminate\Support\Facades\Auth;
@@ -19,18 +20,17 @@ class StudentController extends Controller
 
     public function index(): View
     {
-        /** @var Student $student */
-        $student = Auth::user()?->userable;
+        $user = loggedUser();
 
         return view('delmas.student.index',
             [
                 'title' => 'Tableau de bord',
                 'goals' => $this->goalRepository->allPaginated(),
-                'procedures' => $this->procedureRepository->getProceduresOfStudentPaginated($student),
-                'countProcedures' => $this->procedureRepository->getProceduresOfStudent($student)->count(),
-                'waitingProcedures' => $this->procedureRepository->countProceduresOfStudentWithStatus($student, 1),
-                'refusedProcedures' => $this->procedureRepository->countProceduresOfStudentWithStatus($student, 2),
-                'acceptedProcedures' => $this->procedureRepository->countProceduresOfStudentWithStatus($student, 3),
+                'procedures' => $this->procedureRepository->getProceduresOfStudentPaginated($user),
+                'countProcedures' => $this->procedureRepository->getProceduresOfStudent($user)->count(),
+                'waitingProcedures' => $this->procedureRepository->countProceduresOfStudentWithStatus($user, 1),
+                'refusedProcedures' => $this->procedureRepository->countProceduresOfStudentWithStatus($user, 2),
+                'acceptedProcedures' => $this->procedureRepository->countProceduresOfStudentWithStatus($user, 3),
             ]
         );
     }

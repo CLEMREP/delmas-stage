@@ -24,7 +24,7 @@ class CompanyFactory extends Factory
             'address' => $this->faker->address(),
             'city' => $this->faker->city(),
             'zip' => $this->faker->postcode(),
-            'student_id' => User::factory(),
+            'user_id' => User::factory(),
             'contact_id' => Contact::factory(),
         ];
     }

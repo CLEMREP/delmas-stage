@@ -23,7 +23,7 @@ class Procedure extends Model
         'date',
         'resend',
         'date_resend',
-        'student_id',
+        'user_id',
         'promotion_id',
         'company_id',
     ];
@@ -41,7 +41,7 @@ class Procedure extends Model
 
     public function student(): BelongsTo
     {
-        return $this->belongsTo(Student::class);
+        return $this->belongsTo(User::class);
     }
 
     public function company(): BelongsTo

@@ -5,6 +5,7 @@ namespace App\Repositories;
 use App\Models\Procedure;
 use App\Models\Promotion;
 use App\Models\Student;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 
@@ -26,7 +27,7 @@ class ProcedureRepository
             'date' => $data['date'],
             'resend' => $data['resend'],
             'date_resend' => $data['date_resend'],
-            'student_id' => $data['student_id'],
+            'user_id' => $data['user_id'],
             'promotion_id' => $data['promotion_id'],
         ]);
     }
@@ -43,7 +44,7 @@ class ProcedureRepository
             'date' => $data['date'],
             'resend' => $data['resend'],
             'date_resend' => $data['date_resend'],
-            'student_id' => $data['student_id'],
+            'user_id' => $data['user_id'],
         ]);
     }
 
@@ -52,12 +53,12 @@ class ProcedureRepository
         return $procedure->delete();
     }
 
-    public function getProceduresOfStudent(Student $student): Collection
+    public function getProceduresOfStudent(User $student): Collection
     {
         return $student->procedures;
     }
 
-    public function getProceduresOfStudentPaginated(Student $student): LengthAwarePaginator
+    public function getProceduresOfStudentPaginated(User $student): LengthAwarePaginator
     {
         return $student->procedures()->paginate(5);
     }
@@ -127,7 +128,7 @@ class ProcedureRepository
         return $this->getProceduresOfPromotion($promotion)->where('status_id', $status)->count();
     }
 
-    public function countProceduresOfStudentWithStatus(Student $student, int $status): int
+    public function countProceduresOfStudentWithStatus(User $student, int $status): int
     {
         return $student->procedures()->where('status_id', $status)->count();
     }

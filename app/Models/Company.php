@@ -22,7 +22,7 @@ class Company extends Model
         'address',
         'city',
         'zip',
-        'student_id',
+        'user_id',
         'contact_id',
     ];
 
@@ -37,7 +37,7 @@ class Company extends Model
 
     public function student(): BelongsTo
     {
-        return $this->belongsTo(Student::class);
+        return $this->belongsTo(User::class);
     }
 
     public function procedure(): HasOne

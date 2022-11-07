@@ -55,7 +55,7 @@
             </label>
             <label class="block text-sm w-full sm:w-1/2">
                 <span class="text-gray-700 dark:text-gray-400">Téléphone</span>
-                <input class="@error('phone') border-red-500 @enderror block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input" name="phone" value="{{ $user->userable->phone }}" placeholder="07 61 38 20 21">
+                <input class="@error('phone') border-red-500 @enderror block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input" name="phone" value="{{ $user->phone }}" placeholder="07 61 38 20 21">
                 @error('phone')
                 <div class="mt-2 flex flex-row items-center justify-start font-medium text-red-500 mb-2">
                     <svg class="w-5 h-5 inline mr-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>

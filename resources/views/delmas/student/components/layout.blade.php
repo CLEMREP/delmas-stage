@@ -268,7 +268,7 @@
                     <ul class="flex items-center flex-shrink-0 space-x-6">
                         <div class="md:flex flex-col hidden">
                             <span class="text-white text-sm font-medium">{{ Auth::user()->firstname . ' ' . Auth::user()->lastname }}</span>
-                            <span class="text-gray-200 text-right text-sm font-medium">Étudiant(e) - {{ Auth::user()->userable->promotion->name }}</span>
+                            <span class="text-gray-200 text-right text-sm font-medium">Étudiant(e) - {{ Auth::user()->promotion->name }}</span>
                         </div>
                         <!-- Profile menu -->
                         <li class="relative">

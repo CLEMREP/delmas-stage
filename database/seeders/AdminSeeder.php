@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Admin;
+use App\Models\Enums\Roles;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 
@@ -15,12 +16,10 @@ class AdminSeeder extends Seeder
      */
     public function run()
     {
-        $admin = Admin::factory()->create();
         User::factory()->create(
             [
                 'email' => 'admin@admin.fr',
-                'userable_type' => $admin::class,
-                'userable_id' => $admin->getKey(),
+                'role' => Roles::Admin,
             ]
         );
     }

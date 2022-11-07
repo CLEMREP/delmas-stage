@@ -22,7 +22,7 @@ class Contact extends Model
         'job_id',
         'phone',
         'email',
-        'student_id',
+        'user_id',
     ];
 
     ////////////////
@@ -36,7 +36,7 @@ class Contact extends Model
 
     public function student(): BelongsTo
     {
-        return $this->belongsTo(Student::class);
+        return $this->belongsTo(User::class);
     }
 
     public function job(): BelongsTo

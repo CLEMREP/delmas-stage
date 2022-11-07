@@ -7,7 +7,6 @@ use App\Http\Requests\UpdateStudentAccountRequest;
 use App\Models\Student;
 use App\Repositories\StudentRepository;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
 class AccountController extends Controller
@@ -18,7 +17,7 @@ class AccountController extends Controller
 
     public function edit(Student $student): View
     {
-        return view('delmas.student.account.account', ['title' => 'Mon compte', 'user' => Auth::user()]);
+        return view('delmas.student.account.account', ['title' => 'Mon compte', 'user' => loggedUser()]);
     }
 
     public function update(UpdateStudentAccountRequest $request): RedirectResponse
@@ -26,10 +25,11 @@ class AccountController extends Controller
         /** @var array $validated */
         $validated = $request->validated();
 
-        /** @var Student $student */
-        $student = Auth::user()?->userable;
+        $user = loggedUser();
 
-        $this->studentRepository->updateAccount($validated, $student);
+        $validated['promotion_id'] = $user->promotion_id;
+
+        $this->studentRepository->updateAccount($validated, $user);
 
         return redirect(route('student.account.edit'))->with('success', 'La modification du compte a bien été effectuée !');
     }

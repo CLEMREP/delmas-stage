@@ -5,6 +5,7 @@ namespace Database\Factories;
 use App\Models\Company;
 use App\Models\Promotion;
 use App\Models\Student;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -21,7 +22,7 @@ class ProcedureFactory extends Factory
     {
         return [
             'date' => now(),
-            'student_id' => Student::factory(),
+            'user_id' => User::factory(),
             'company_id' => Company::factory(),
             'promotion_id' => Promotion::all()->random()->getKey(),
         ];

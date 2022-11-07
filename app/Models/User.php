@@ -2,9 +2,12 @@
 
 namespace App\Models;
 
+use App\Models\Enums\Roles;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -14,8 +17,21 @@ use Laravel\Sanctum\HasApiTokens;
  * @property string $lastname
  * @property string $email
  * @property string $password
- * @property string $userable_type
- * @property int $userable_id
+ * @property string $phone
+ * @property string $role
+ * @property string $address
+ * @property string $city
+ * @property string $zip
+ * @property string mobility
+ * @property string $desire
+ * @property string $motivation
+ * @property int $promotion_id
+ * @property Promotion $promotion
+ * @property Promotion $promotions
+ * @property Company $companies
+ * @property Contact $contacts
+ * @property Procedure $procedures
+ * @property Serie $series
  */
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -30,9 +46,16 @@ class User extends Authenticatable implements MustVerifyEmail
         'firstname',
         'lastname',
         'email',
+        'phone',
+        'role',
         'password',
-        'userable_type',
-        'userable_id',
+        'address',
+        'city',
+        'zip',
+        'mobility',
+        'desire',
+        'motivation',
+        'promotion_id',
     ];
 
     /**
@@ -51,11 +74,72 @@ class User extends Authenticatable implements MustVerifyEmail
      * @var array<string, string>
      */
     protected $casts = [
+        'role' => Roles::class,
         'email_verified_at' => 'datetime',
+        'promotion_id' => 'integer',
     ];
 
-    public function userable(): MorphTo
+
+    ////////////////
+    /// RELATIONSHIPS
+    ///////////////
+
+    public function promotion(): BelongsTo
     {
-        return $this->morphTo();
+        return $this->belongsTo(Promotion::class);
+    }
+
+    public function companies(): HasMany
+    {
+        return $this->hasMany(Company::class);
+    }
+
+    public function contacts(): HasMany
+    {
+        return $this->hasMany(Contact::class);
+    }
+
+    public function procedures(): HasMany
+    {
+        return $this->hasMany(Procedure::class);
+    }
+
+    public function promotions(): BelongsToMany
+    {
+        return $this->belongsToMany(Promotion::class);
+    }
+
+    public function series(): BelongsToMany
+    {
+        return $this->belongsToMany(Serie::class);
+    }
+
+    ////////////////
+    /// CUSTOM
+    ///////////////
+
+    public function is_super_admin(): bool
+    {
+        return $this->role == Roles::Admin;
+    }
+
+    public function is_admin(): bool
+    {
+        return $this->role == Roles::Admin;
+    }
+
+    public function is_teacher(): bool
+    {
+        return $this->role == Roles::Teacher;
+    }
+
+    public function is_student(): bool
+    {
+        return $this->role == Roles::Student;
+    }
+
+    public function fullname(): string
+    {
+        return $this->firstname . ' ' . $this->lastname;
     }
 }

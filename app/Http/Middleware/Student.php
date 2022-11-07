@@ -2,9 +2,9 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Enums\Roles;
 use Closure;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class Student
 {
@@ -17,7 +17,7 @@ class Student
      */
     public function handle(Request $request, Closure $next)
     {
-        if (Auth::user()?->userable_type == \App\Models\Student::class)
+        if (loggedUser()->role == Roles::Student)
         {
             return $next($request);
         }

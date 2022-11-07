@@ -2,13 +2,13 @@
 
 namespace App\Repositories;
 
-use App\Models\Student;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Hash;
 
 class StudentRepository
 {
-    public function __construct(private Student $model)
+    public function __construct(private User $model)
     {
     }
 
@@ -20,15 +20,12 @@ class StudentRepository
     /**
      * @param  array<string>  $data
      */
-    public function updateAccount(array $data, Student $student): bool
+    public function updateAccount(array $data, User $student): bool
     {
         $attributes = [
             'lastname' => $data['lastname'],
             'firstname' => $data['firstname'],
             'email' => $data['email'],
-        ];
-
-        $studentAttributes = [
             'phone' => $data['phone'] ?? '',
             'promotion_id' => $data['promotion_id'] ?? '',
             'zip' => $data['zip'] ?? '',
@@ -43,12 +40,10 @@ class StudentRepository
             $attributes['password'] = Hash::make($data['password']);
         }
 
-        $student->user()->update($attributes);
-
-        return $student->update($studentAttributes);
+        return $student->update($attributes);
     }
 
-    public function checkStudentHasThisContact(Student $student, int $contactId): bool
+    public function checkStudentHasThisContact(User $student, int $contactId): bool
     {
         return $student->contacts() /** @phpstan-ignore-line */
             ->where('id', $contactId)
@@ -56,7 +51,7 @@ class StudentRepository
             ->isEmpty();
     }
 
-    public function checkStudentHasThisProcedure(Student $student, int $procedureId): bool
+    public function checkStudentHasThisProcedure(User $student, int $procedureId): bool
     {
         return $student->procedures() /** @phpstan-ignore-line */
             ->where('id', $procedureId)
@@ -64,7 +59,7 @@ class StudentRepository
             ->isEmpty();
     }
 
-    public function checkStudentHasThisCompany(Student $student, int $companyId): bool
+    public function checkStudentHasThisCompany(User $student, int $companyId): bool
     {
         return $student->companies() /** @phpstan-ignore-line */
             ->where('id', $companyId)

@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Models\Student;
+use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
@@ -23,13 +24,13 @@ class UpdateStudentAccountRequest extends FormRequest
             [
                 'firstname' => ['required', 'string', 'max:255'],
                 'lastname' => ['required', 'string', 'max:255'],
-                'phone' => ['required', 'regex:/^(?:(?:\+|00)33|0)\s*[1-9](?:[\s.-]*\d{2}){4}$/', Rule::unique('students', 'phone')->ignore($student->getKey())],
+                'phone' => ['required', 'regex:/^(?:(?:\+|00)33|0)\s*[1-9](?:[\s.-]*\d{2}){4}$/', Rule::unique('users', 'phone')->ignore($student->getKey())],
                 'email' => [
                     'required',
                     'string',
                     'email',
                     'max:255',
-                    Rule::unique('users', 'email')->ignore($student->user?->getKey()),
+                    Rule::unique('users', 'email')->ignore($student->getKey()),
                 ],
                 'address' => 'nullable|string',
                 'city' => 'nullable|string',
@@ -60,11 +61,8 @@ class UpdateStudentAccountRequest extends FormRequest
         ];
     }
 
-    protected function getRequestStudent(): Student
+    protected function getRequestStudent(): User
     {
-        /** @var Student $student */
-        $student = Auth::user()?->userable;
-
-        return $student;
+        return loggedUser();
     }
 }
