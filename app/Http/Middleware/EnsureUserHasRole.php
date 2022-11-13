@@ -2,11 +2,11 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Enums\Roles;
 use Closure;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
-class Admin
+class EnsureUserHasRole
 {
     /**
      * Handle an incoming request.
@@ -15,10 +15,9 @@ class Admin
      * @param  \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
      * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */
-    public function handle(Request $request, Closure $next)
+    public function handle(Request $request, Closure $next, string $role)
     {
-        if (Auth::user()?->userable_type == \App\Models\Admin::class)
-        {
+        if (auth()?->user()->role->value == $role) {
             return $next($request);
         }
 

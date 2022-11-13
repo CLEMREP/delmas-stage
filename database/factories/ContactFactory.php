@@ -24,7 +24,7 @@ class ContactFactory extends Factory
             'job_id' => Job::factory()->create(),
             'phone' => $this->faker->phoneNumber(),
             'email' => $this->faker->email(),
-            'student_id' => User::factory(),
+            'user_id' => User::factory(),
         ];
     }
 }

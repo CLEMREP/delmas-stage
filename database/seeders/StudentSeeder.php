@@ -7,6 +7,7 @@ use App\Models\Contact;
 use App\Models\Format;
 use App\Models\Job;
 use App\Models\Procedure;
+use App\Models\Promotion;
 use App\Models\Status;
 use App\Models\Student;
 use App\Models\User;
@@ -22,36 +23,45 @@ class StudentSeeder extends Seeder
     public function run()
     {
         $job = Job::all()->random();
+        $promotions = Promotion::all();
 
-        for ($i = 0; $i <= 30; $i++) {
-            $student = Student::factory()->create();
-            User::factory()->create(
-                [
-                    'userable_type' => $student::class,
-                    'userable_id' => $student->getKey(),
-                ]
-            );
+        foreach ($promotions as $promotion)
+        {
+            for ($i = 0; $i <= 15; $i++) {
+                $user = User::factory()->create([
+                    'promotion_id' => $promotion->getKey(),
+                ]);
 
-            $ramdon = random_int(5, 15);
+                $ramdon = random_int(5, 8);
 
-            for ($j = 0; $j <= $ramdon; $j++) {
-                $contact = Contact::factory([
-                    'student_id' => $student->getKey(),
-                    'job_id' => $job->getKey(),
-                ])->create();
+                for ($j = 0; $j <= $ramdon; $j++) {
+                    $contact = Contact::factory([
+                        'user_id' => $user->getKey(),
+                        'job_id' => $job->getKey(),
+                    ])->create();
 
-                $company = Company::factory([
-                    'student_id' => $student->getKey(),
-                    'contact_id' => $contact->getKey(),
-                ])->create();
+                    $company = Company::factory([
+                        'user_id' => $user->getKey(),
+                        'contact_id' => $contact->getKey(),
+                    ])->create();
 
-                Procedure::factory([
-                    'format_id' => Format::all()->random()->getKey(),
-                    'status_id' => Status::all()->random()->getKey(),
-                    'student_id' => $student->getKey(),
-                    'company_id' => $company->getKey(),
-                ])->create();
+                    Procedure::factory([
+                        'format_id' => Format::all()->random()->getKey(),
+                        'status_id' => Status::all()->random()->getKey(),
+                        'user_id' => $user->getKey(),
+                        'company_id' => $company->getKey(),
+                        'promotion_id' => $promotion->getKey(),
+                        'date' => now()->subDays(random_int(1, 30)),
+                    ])->create();
+                }
             }
         }
+
+        User::find(3)->update([
+            'firstname' => 'Clément',
+            'lastname' => 'REPEL',
+            'email' => 'etudiant@etudiant.fr',
+            ]
+        );
     }
 }

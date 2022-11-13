@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 /**
  * @property string $name
@@ -35,12 +36,12 @@ class Promotion extends Model
 
     public function students(): HasMany
     {
-        return $this->hasMany(Student::class);
+        return $this->hasMany(User::class);
     }
 
     public function teachers(): BelongsToMany
     {
-        return $this->belongsToMany(Teacher::class);
+        return $this->belongsToMany(User::class);
     }
 
     public function goals(): HasMany

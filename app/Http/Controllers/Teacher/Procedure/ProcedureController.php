@@ -4,9 +4,7 @@ namespace App\Http\Controllers\Teacher\Procedure;
 
 use App\Http\Controllers\Controller;
 use App\Models\Procedure;
-use App\Models\Teacher;
 use App\Repositories\ProcedureRepository;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
 class ProcedureController extends Controller
@@ -19,12 +17,11 @@ class ProcedureController extends Controller
 
     public function index(): View
     {
-        /** @var Teacher $teacher */
-        $teacher = Auth::user()?->userable;
+        $user = loggedUser();
 
         return view('delmas.teacher.procedure.index', [
             'title' => 'Suivi des démarches',
-            'procedures' => $this->procedureRepository->getAllProceduresOfPromotionsPaginated($teacher->promotions, 10),
+            'procedures' => $this->procedureRepository->getAllProceduresOfPromotionsPaginated($user->promotions, 10),
         ]);
     }
 

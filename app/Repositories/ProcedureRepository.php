@@ -5,6 +5,7 @@ namespace App\Repositories;
 use App\Models\Procedure;
 use App\Models\Promotion;
 use App\Models\Student;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 
@@ -26,7 +27,7 @@ class ProcedureRepository
             'date' => $data['date'],
             'resend' => $data['resend'],
             'date_resend' => $data['date_resend'],
-            'student_id' => $data['student_id'],
+            'user_id' => $data['user_id'],
             'promotion_id' => $data['promotion_id'],
         ]);
     }
@@ -43,7 +44,7 @@ class ProcedureRepository
             'date' => $data['date'],
             'resend' => $data['resend'],
             'date_resend' => $data['date_resend'],
-            'student_id' => $data['student_id'],
+            'user_id' => $data['user_id'],
         ]);
     }
 
@@ -52,19 +53,19 @@ class ProcedureRepository
         return $procedure->delete();
     }
 
-    public function getProceduresOfStudent(Student $student): Collection
+    public function getProceduresOfStudent(User $student): Collection
     {
         return $student->procedures;
     }
 
-    public function getProceduresOfStudentPaginated(Student $student): LengthAwarePaginator
+    public function getProceduresOfStudentPaginated(User $student): LengthAwarePaginator
     {
-        return $student->procedures()->paginate(5);
+        return $student->procedures()->paginate(10);
     }
 
     public function allPaginated(): LengthAwarePaginator
     {
-        return $this->model->newQuery()->paginate(5);
+        return $this->model->newQuery()->paginate(10);
     }
 
     public function getAllProceduresOfPromotionsPaginated(Collection $promotions, int $perPage): LengthAwarePaginator
@@ -127,7 +128,7 @@ class ProcedureRepository
         return $this->getProceduresOfPromotion($promotion)->where('status_id', $status)->count();
     }
 
-    public function countProceduresOfStudentWithStatus(Student $student, int $status): int
+    public function countProceduresOfStudentWithStatus(User $student, int $status): int
     {
         return $student->procedures()->where('status_id', $status)->count();
     }
@@ -135,5 +136,22 @@ class ProcedureRepository
     public function countAllProceduresWithStatus(int $status): int
     {
         return $this->model->newQuery()->where('status_id', $status)->count();
+    }
+
+    public function countProceduresInSeries(User $admin): int
+    {
+        return $this->model->newQuery()
+            ->with('student')
+            ->whereHas('student', fn($q) => $q->whereHas('promotion', fn($q) => $q->whereIn('serie_id', $admin->series->pluck('id'))))
+            ->get()
+            ->count();
+    }
+
+    public function getProceduresInSeriesPaginated(User $admin, int $perPage): LengthAwarePaginator
+    {
+        return $this->model->newQuery()
+            ->with('student')
+            ->whereHas('student', fn($q) => $q->whereHas('promotion', fn($q) => $q->whereIn('serie_id', $admin->series->pluck('id'))))
+            ->paginate($perPage);
     }
 }

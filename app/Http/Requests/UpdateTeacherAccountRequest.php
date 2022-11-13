@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Models\Teacher;
+use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
@@ -23,13 +24,13 @@ class UpdateTeacherAccountRequest extends FormRequest
             [
                 'firstname' => ['required', 'string', 'max:255'],
                 'lastname' => ['required', 'string', 'max:255'],
-                'phone' => ['required', 'regex:/^(?:(?:\+|00)33|0)\s*[1-9](?:[\s.-]*\d{2}){4}$/', Rule::unique('teachers', 'phone')->ignore($teacher->getKey())],
+                'phone' => ['required', 'regex:/^(?:(?:\+|00)33|0)\s*[1-9](?:[\s.-]*\d{2}){4}$/', Rule::unique('users', 'phone')->ignore($teacher->getKey())],
                 'email' => [
                     'required',
                     'string',
                     'email',
                     'max:255',
-                    Rule::unique('users', 'email')->ignore($teacher->user?->getKey()),
+                    Rule::unique('users', 'email')->ignore($teacher->getKey()),
                 ],
                 'password' => ['nullable', 'confirmed', Rules\Password::defaults()],
             ];
@@ -53,10 +54,9 @@ class UpdateTeacherAccountRequest extends FormRequest
         ];
     }
 
-    protected function getRequestTeacher(): Teacher
+    protected function getRequestTeacher(): User
     {
-        /** @var Teacher $teacher */
-        $teacher = Auth::user()?->userable;
+        $teacher = loggedUser();
 
         return $teacher;
     }

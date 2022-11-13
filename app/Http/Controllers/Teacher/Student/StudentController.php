@@ -4,14 +4,11 @@ namespace App\Http\Controllers\Teacher\Student;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UpdateStudentRequest;
-use App\Http\Resources\UserResource;
-use App\Models\Student;
-use App\Models\Teacher;
+use App\Models\User;
 use App\Repositories\StudentRepository;
 use App\Repositories\TeacherRepository;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
 class StudentController extends Controller
@@ -25,42 +22,42 @@ class StudentController extends Controller
 
     public function index(Request $request): View
     {
-        /** @var Teacher $teacher */
-        $teacher = Auth::user()?->userable;
+        $user = loggedUser();
 
         return view('delmas.teacher.student.index', [
             'title' => 'Mes élèves',
-            'students' => $this->teacherRepository->allStudentsPaginated($teacher),
+            'students' => $this->teacherRepository->allStudents($user),
         ]);
     }
 
-    public function show(Student $student): View
+    public function show(User $user): View
     {
+        abort_if($this->teacherRepository->checkTeacherHasThisStudent($user), 403);
+
         return view('delmas.teacher.student.show', [
-            'title' => 'Fiche de l\'élève ' . $student->fullname(),
-            'student' => $student,
+            'title' => 'Fiche de l\'élève ' . $user->fullname(),
+            'student' => $user,
         ]);
     }
 
-    public function edit(Student $student): View
+    public function edit(User $user): View
     {
-        /** @var Teacher $teacher */
-        $teacher = Auth::user()?->userable;
+        $teacher = loggedUser();
 
         return view('delmas.teacher.student.edit', [
-            'title' => 'Modification de l\'élève ' . $student->fullname(),
-            'student' => $student,
+            'title' => 'Modification de l\'élève ' . $user->fullname(),
+            'student' => $user,
             'promotions' => $teacher->promotions,
         ]);
     }
 
-    public function update(UpdateStudentRequest $request, Student $student): RedirectResponse
+    public function update(UpdateStudentRequest $request, User $user): RedirectResponse
     {
         /** @var array $validated */
         $validated = $request->validated();
 
-        $this->studentRepository->updateAccount($validated, $student);
+        $this->studentRepository->updateAccount($validated, $user);
 
-        return redirect(route('teacher.student.index'))->with('success', 'L\'élève ' . $student->fullname() . ' a bien été effectuée !');
+        return redirect(route('teacher.student.index'))->with('success', 'L\'élève ' . $user->fullname() . ' a bien été effectuée !');
     }
 }

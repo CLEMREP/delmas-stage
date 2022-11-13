@@ -8,6 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
     @vite(['resources/js/init-alpine.js'])
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <livewire:styles />
 </head>
 
 <style>
@@ -121,6 +122,11 @@
                         </a>
                     </li>
                 </ul>
+
+                <footer class="absolute bottom-0 w-64 p-4 bg-white rounded-lg shadow md:flex md:items-center md:justify-between md:p-6 dark:bg-gray-800 justify-items-end">
+                    <span class="text-sm text-white sm:text-center">Développé par <a href="https://clement-repel.fr/" class="text-purple-300 hover:text-purple-500">Clément REPEL</a>.
+                    </span>
+                </footer>
             </div>
         </aside>
         <!-- Mobile sidebar -->
@@ -248,7 +254,10 @@
                         </a>
                     </li>
                 </ul>
-
+                <footer class="absolute bottom-0 w-64 p-4 bg-white rounded-lg shadow md:flex md:items-center md:justify-between md:p-6 dark:bg-gray-800 justify-items-end">
+                    <span class="text-sm text-white sm:text-center">Développé par <a href="https://clement-repel.fr/" class="text-purple-300 hover:text-purple-500">Clément REPEL</a>.
+                    </span>
+                </footer>
             </div>
         </aside>
 
@@ -268,7 +277,7 @@
                     <ul class="flex items-center flex-shrink-0 space-x-6">
                         <div class="md:flex flex-col hidden">
                             <span class="text-white text-sm font-medium">{{ Auth::user()->firstname . ' ' . Auth::user()->lastname }}</span>
-                            <span class="text-gray-200 text-right text-sm font-medium">Étudiant(e) - {{ Auth::user()->userable->promotion->name }}</span>
+                            <span class="text-gray-200 text-right text-sm font-medium">Étudiant(e) - {{ Auth::user()->promotion->name }}</span>
                         </div>
                         <!-- Profile menu -->
                         <li class="relative">
@@ -331,5 +340,6 @@
             </main>
         </div>
     </div>
+    <livewire:scripts />
 </body>
 </html>

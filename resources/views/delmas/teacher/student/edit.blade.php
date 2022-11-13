@@ -2,7 +2,7 @@
 
 @section('content')
     <h2 class="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200">
-        Édition de l'utilisateur {{ $student->user->firstname . ' ' . $student->user->lastname }}
+        Édition de l'utilisateur {{ $student->fullname() }}
     </h2>
 
     <form action="{{ route('teacher.student.update', $student) }}" method="POST">
@@ -11,7 +11,7 @@
         <div class="flex flex-col sm:flex-row justify-between w-full">
             <label class="block text-sm w-full mb-4 sm:mb-0 sm:w-1/2 sm:mr-3">
                 <span class="text-gray-700 dark:text-gray-400">Nom</span>
-                <input class="@error('lastname') border-red-500 @enderror block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input" name="lastname" value="{{ $student->user->lastname }}" placeholder="REPEL">
+                <input class="@error('lastname') border-red-500 @enderror block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input" name="lastname" value="{{ $student->lastname }}" placeholder="REPEL">
                 @error('lastname')
                 <div class="mt-2 flex flex-row items-center justify-start font-medium text-red-500 mb-2">
                     <svg class="w-5 h-5 inline mr-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>
@@ -23,7 +23,7 @@
             </label>
             <label class="block text-sm w-full sm:w-1/2">
                 <span class="text-gray-700 dark:text-gray-400">Prénom</span>
-                <input class="@error('firstname') border-red-500 @enderror block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input" name="firstname" value="{{ $student->user->firstname }}" placeholder="Clément">
+                <input class="@error('firstname') border-red-500 @enderror block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input" name="firstname" value="{{ $student->firstname }}" placeholder="Clément">
                 @error('firstname')
                 <div class="mt-2 flex flex-row items-center justify-start font-medium text-red-500 mb-2">
                     <svg class="w-5 h-5 inline mr-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>
@@ -38,7 +38,7 @@
         <div class="mt-4">
             <label class="block text-sm">
                 <span class="text-gray-700 dark:text-gray-400">Adresse électronique</span>
-                <input class="@error('email') border-red-500 @enderror block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input" name="email" value="{{ $student->user->email }}" placeholder="contact@clement-repel.fr">
+                <input class="@error('email') border-red-500 @enderror block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input" name="email" value="{{ $student->email }}" placeholder="contact@clement-repel.fr">
                 @error('email')
                 <div class="mt-2 flex flex-row items-center justify-start font-medium text-red-500 mb-2">
                     <svg class="w-5 h-5 inline mr-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>

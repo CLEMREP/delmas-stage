@@ -5,6 +5,7 @@ namespace App\Repositories;
 use App\Models\Company;
 use App\Models\Contact;
 use App\Models\Student;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 
@@ -17,7 +18,7 @@ class CompanyRepository
     /**
      * @param  array<string>  $data
      */
-    public function createCompany(array $data, Student $student): Company
+    public function createCompany(array $data, User $student): Company
     {
         return $this->model->create([
             'name' => $data['name'],
@@ -25,7 +26,7 @@ class CompanyRepository
             'address' => $data['address'],
             'city' => $data['city'],
             'zip' => $data['zip'],
-            'student_id' => $student->getKey(),
+            'user_id' => $student->getKey(),
             'contact_id' => $data['contact_id'],
         ]);
     }
@@ -33,7 +34,7 @@ class CompanyRepository
     /**
      * @param  array<string>  $data
      */
-    public function updateCompany(array $data, Company $company, Student $student): bool|null
+    public function updateCompany(array $data, Company $company, User $student): bool|null
     {
         return $company->update([
             'name' => $data['name'],
@@ -41,7 +42,7 @@ class CompanyRepository
             'address' => $data['address'],
             'city' => $data['city'],
             'zip' => $data['zip'],
-            'student_id' => $student->getKey(),
+            'user_id' => $student->getKey(),
             'contact_id' => $data['contact_id'],
         ]);
     }
@@ -54,12 +55,12 @@ class CompanyRepository
         return $contact;
     }
 
-    public function getCompaniesOfStudent(Student $student): Collection
+    public function getCompaniesOfStudent(User $student): Collection
     {
         return $student->companies()->get();
     }
 
-    public function getCompaniesOfStudentPaginated(Student $student): LengthAwarePaginator
+    public function getCompaniesOfStudentPaginated(User $student): LengthAwarePaginator
     {
         return $student->companies()->paginate(5);
     }
@@ -69,7 +70,7 @@ class CompanyRepository
         return $this->model->newQuery()->paginate(5);
     }
 
-    public function companyBelongsToStudent(Student $student, Company $company): bool
+    public function companyBelongsToStudent(User $student, Company $company): bool
     {
         return $student->companies() /** @phpstan-ignore-line */
             ->where('id', $company->getKey())
@@ -80,5 +81,24 @@ class CompanyRepository
     public function deleteCompany(Company $company): bool|null
     {
         return $company->delete();
+    }
+
+    public function countCompaniesInSeries(User $admin): int
+    {
+        return $this->model->newQuery()
+            ->with(['student', 'procedure'])
+            ->whereHas('student', fn($q) => $q->whereHas('promotion', fn($q) => $q->whereIn('serie_id', $admin->series->pluck('id'))))
+            ->whereHas('procedures', fn($q) => $q->where('status_id', 3))
+            ->count();
+    }
+
+    public function checkAdminHasThisCompany(User $admin, Company $company): bool
+    {
+        return $this->model->newQuery()
+            ->with(['student'])
+            ->whereHas('student', fn($q) => $q->whereHas('promotion', fn($q) => $q->whereIn('serie_id', $admin->series->pluck('id'))))
+            ->where('id', $company->getKey())
+            ->get()
+            ->isEmpty();
     }
 }

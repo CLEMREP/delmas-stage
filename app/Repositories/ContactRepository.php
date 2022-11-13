@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Models\Contact;
 use App\Models\Student;
+use App\Models\User;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 
@@ -24,7 +25,7 @@ class ContactRepository
             'phone' => $data['phone'],
             'email' => $data['email'],
             'job_id' => $data['job_id'],
-            'student_id' => $data['student_id'],
+            'user_id' => $data['user_id'],
         ]);
     }
 
@@ -39,16 +40,16 @@ class ContactRepository
             'phone' => $data['phone'],
             'email' => $data['email'],
             'job_id' => $data['job_id'],
-            'student_id' => $data['student_id'],
+            'user_id' => $data['user_id'],
         ]);
     }
 
-    public function getContactsFromStudent(Student $student): Collection
+    public function getContactsFromStudent(User $student): Collection
     {
         return $student->contacts()->get();
     }
 
-    public function getContactsOfStudentPaginated(Student $student): LengthAwarePaginator
+    public function getContactsOfStudentPaginated(User $student): LengthAwarePaginator
     {
         return $student->contacts()->paginate(5);
     }

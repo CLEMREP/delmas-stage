@@ -25,10 +25,9 @@ class ContactController extends Controller
 
     public function index(): View
     {
-        /** @var Student $student */
-        $student = Auth::user()?->userable;
+        $user = loggedUser();
 
-        $contacts = $this->contactRepository->getContactsOfStudentPaginated($student);
+        $contacts = $this->contactRepository->getContactsOfStudentPaginated($user);
 
         return view('delmas.student.contacts.index', [
             'title' => 'Mes contacts',
@@ -48,8 +47,8 @@ class ContactController extends Controller
 
     public function store(ContactRequest $request): RedirectResponse
     {
-        /** @var User $student */
-        $student = Auth::user()?->userable;
+        $user = loggedUser();
+
 
         /** @var array $validated */
         $validated = $request->validated();
@@ -57,7 +56,7 @@ class ContactController extends Controller
         /** @var int $jobId */
         $jobId = $validated['job_id'];
 
-        $validated['student_id'] = $student->getKey();
+        $validated['user_id'] = $user->getKey();
 
         if (! is_null($this->jobRepository->findJobById($jobId))) {
             $this->contactRepository->createContact($validated);
@@ -70,13 +69,12 @@ class ContactController extends Controller
 
     public function show(Contact $contact): View
     {
-        /** @var Student $student */
-        $student = Auth::user()?->userable;
+        $user = loggedUser();
 
         /** @var int $contactId */
         $contactId = $contact->getKey();
 
-        abort_if($this->studentRepository->checkStudentHasThisContact($student, $contactId), 404);
+        abort_if($this->studentRepository->checkStudentHasThisContact($user, $contactId), 404);
 
         return view('delmas.student.contacts.show', [
             'title' => 'Fiche contact de '.$contact->firstname.' '.$contact->name,
@@ -86,15 +84,14 @@ class ContactController extends Controller
 
     public function edit(Contact $contact): View
     {
-        /** @var Student $student */
-        $student = Auth::user()?->userable;
+        $user = loggedUser();
 
         /** @var int $contactId */
         $contactId = $contact->getKey();
 
         $jobs = $this->jobRepository->getAllJobs();
 
-        abort_if($this->studentRepository->checkStudentHasThisContact($student, $contactId), 404);
+        abort_if($this->studentRepository->checkStudentHasThisContact($user, $contactId), 404);
 
         return view('delmas.student.contacts.edit', [
             'title' => 'Édition de '.$contact->firstname.' '.$contact->name,
@@ -108,15 +105,14 @@ class ContactController extends Controller
         /** @var array $validated */
         $validated = $request->validated();
 
-        /** @var Student $student */
-        $student = Auth::user()?->userable;
+        $user = loggedUser();
 
         /** @var int $contactId */
         $contactId = $contact->getKey();
 
-        $validated['student_id'] = $student->getKey();
+        $validated['user_id'] = $user->getKey();
 
-        abort_if($this->studentRepository->checkStudentHasThisContact($student, $contactId), 404);
+        abort_if($this->studentRepository->checkStudentHasThisContact($user, $contactId), 404);
 
         $this->contactRepository->updateContact($validated, $contact);
 
@@ -125,13 +121,12 @@ class ContactController extends Controller
 
     public function destroy(Contact $contact): RedirectResponse
     {
-        /** @var Student $student */
-        $student = Auth::user()?->userable;
+        $user = loggedUser();
 
         /** @var int $contactId */
         $contactId = $contact->getKey();
 
-        abort_if($this->studentRepository->checkStudentHasThisContact($student, $contactId), 404);
+        abort_if($this->studentRepository->checkStudentHasThisContact($user, $contactId), 404);
 
         $this->contactRepository->deleteContact($contact);
 

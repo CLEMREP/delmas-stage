@@ -55,7 +55,7 @@
             </label>
             <label class="block text-sm w-full sm:w-1/2">
                 <span class="text-gray-700 dark:text-gray-400">Téléphone</span>
-                <input class="@error('phone') border-red-500 @enderror block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input" name="phone" value="{{ $user->userable->phone }}" placeholder="07 61 38 20 21">
+                <input class="@error('phone') border-red-500 @enderror block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input" name="phone" value="{{ $user->phone ?? '' }}" placeholder="07 61 38 20 21">
                 @error('phone')
                 <div class="mt-2 flex flex-row items-center justify-start font-medium text-red-500 mb-2">
                     <svg class="w-5 h-5 inline mr-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>
@@ -97,7 +97,7 @@
         <div class="flex flex-col mt-4 sm:flex-row justify-between w-full">
             <label class="block text-sm w-full mb-4 sm:mb-0 sm:w-1/2 sm:mr-3">
                 <span class="text-gray-700 dark:text-gray-400">Code Postal</span>
-                <input class="@error('zip') border-red-500 @enderror block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input" value="{{ $user->userable->zip ?? '' }}" name="zip" placeholder="44100">
+                <input class="@error('zip') border-red-500 @enderror block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input" value="{{ $user->zip ?? '' }}" name="zip" placeholder="44100">
                 @error('zip')
                 <div class="mt-2 flex flex-row items-center justify-start font-medium text-red-500 mb-2">
                     <svg class="w-5 h-5 inline mr-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>
@@ -109,7 +109,7 @@
             </label>
             <label class="block text-sm w-full sm:w-1/2">
                 <span class="text-gray-700 dark:text-gray-400">Ville</span>
-                <input class="@error('city') border-red-500 @enderror block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input" value="{{ $user->userable->city ?? '' }}" name="city" placeholder="Nantes">
+                <input class="@error('city') border-red-500 @enderror block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input" value="{{ $user->city ?? '' }}" name="city" placeholder="Nantes">
                 @error('city')
                 <div class="mt-2 flex flex-row items-center justify-start font-medium text-red-500 mb-2">
                     <svg class="w-5 h-5 inline mr-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>
@@ -124,7 +124,7 @@
         <div class="mt-4">
             <label class="block text-sm">
                 <span class="text-gray-700 dark:text-gray-400">Adresse</span>
-                <input class="@error('address') border-red-500 @enderror block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input" value="{{ $user->userable->address ?? '' }}" name="address" placeholder="568, Boulevard du Massacre">
+                <input class="@error('address') border-red-500 @enderror block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input" value="{{ $user->address ?? '' }}" name="address" placeholder="568, Boulevard du Massacre">
                 @error('address')
                 <div class="mt-2 flex flex-row items-center justify-start font-medium text-red-500 mb-2">
                     <svg class="w-5 h-5 inline mr-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>
@@ -142,8 +142,8 @@
                 <textarea
                     class="@error('motivation') border-red-500 @enderror block w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600
                     dark:bg-gray-700 form-textarea focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray"
-                    rows="3" value="{{ $user->userable->motivation ?? '' }}" name="motivation"
-                    placeholder="Écrivez vos motivations ...">{{ $user->userable->motivation ?? '' }}</textarea>
+                    rows="3" value="{{ $user->motivation ?? '' }}" name="motivation"
+                    placeholder="Écrivez vos motivations ...">{{ $user->motivation ?? '' }}</textarea>
                 @error('motivation')
                 <div class="mt-2 flex flex-row items-center justify-start font-medium text-red-500 mb-2">
                     <svg class="w-5 h-5 inline mr-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>
@@ -159,8 +159,8 @@
                 <textarea
                     class="@error('desire') border-red-500 @enderror block w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600
                     dark:bg-gray-700 form-textarea focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray"
-                    rows="3" value="{{ $user->userable->desire ?? '' }}" name="desire"
-                    placeholder="Écrivez vos critères concernant les offres d'emplois, faites pas les difficiles ...">{{ $user->userable->desire ?? '' }}</textarea>
+                    rows="3" value="{{ $user->desire ?? '' }}" name="desire"
+                    placeholder="Écrivez vos critères concernant les offres d'emplois, faites pas les difficiles ...">{{ $user->desire ?? '' }}</textarea>
                 @error('desire')
                 <div class="mt-2 flex flex-row items-center justify-start font-medium text-red-500 mb-2">
                     <svg class="w-5 h-5 inline mr-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>
@@ -179,7 +179,7 @@
                     </span>
                 <select class="block w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 form-select focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray" name="mobility">
                     <option value="1" >Véhiculé</option>
-                    <option value="0" @if ($user->userable->mobility == 0) @selected(true) @endif>Non véhiculé</option>
+                    <option value="0" @if ($user->mobility == 0) @selected(true) @endif>Non véhiculé</option>
                 </select>
             </label>
         </div>

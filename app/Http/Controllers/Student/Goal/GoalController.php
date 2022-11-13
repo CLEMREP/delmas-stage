@@ -16,12 +16,11 @@ class GoalController extends Controller
 
     public function index(): View
     {
-        /** @var Student $student */
-        $student = Auth::user()?->userable;
+        $user = loggedUser();
 
         return view('delmas.student.goals.index', [
             'title' => 'Les objectifs',
-            'goals' => $this->goalRepository->getGoalsByPromotionPaginated($student->promotion),
+            'goals' => $this->goalRepository->getGoalsByPromotionPaginated($user->promotion),
         ]);
     }
 }

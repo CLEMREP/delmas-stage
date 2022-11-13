@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Enums\Roles;
 use App\Models\Promotion;
 use App\Models\Teacher;
 use App\Models\User;
@@ -16,12 +17,10 @@ class TeacherSeeder extends Seeder
      */
     public function run()
     {
-        $teacher = Teacher::factory()->create();
-        User::factory()->create(
+        $teacher = User::factory()->create(
             [
                 'email' => 'prof@prof.fr',
-                'userable_type' => $teacher::class,
-                'userable_id' => $teacher->getKey(),
+                'role' => Roles::Teacher,
             ]
         );
 

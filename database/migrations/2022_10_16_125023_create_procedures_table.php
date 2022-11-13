@@ -20,8 +20,8 @@ return new class extends Migration
             $table->date('date');
             $table->boolean('resend')->default(false)->nullable();
             $table->date('date_resend')->nullable();
-            $table->foreignId('student_id')->constrained()->onDelete('cascade');
-            $table->foreignId('promotion_id')->constrained();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('promotion_id')->constrained()->onDelete('cascade');
             $table->foreignId('company_id')->constrained()->onDelete('cascade');
         });
     }
