@@ -32,6 +32,6 @@ class Serie extends Model
 
     public function admins(): BelongsToMany
     {
-        return $this->belongsToMany(Admin::class);
+        return $this->belongsToMany(User::class);
     }
 }

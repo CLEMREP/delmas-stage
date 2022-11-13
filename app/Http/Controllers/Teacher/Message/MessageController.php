@@ -16,12 +16,11 @@ class MessageController extends Controller
 
     public function index(): View
     {
-        /** @var Teacher $teacher */
-        $teacher = Auth::user()?->userable;
+        $user = loggedUser();
 
         return view('delmas.teacher.message.index', [
             'title' => 'Message',
-            'students' => $this->teacherRepository->allStudents($teacher),
+            'students' => $this->teacherRepository->allStudents($user),
         ]);
     }
 }

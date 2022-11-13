@@ -82,4 +82,23 @@ class CompanyRepository
     {
         return $company->delete();
     }
+
+    public function countCompaniesInSeries(User $admin): int
+    {
+        return $this->model->newQuery()
+            ->with(['student', 'procedure'])
+            ->whereHas('student', fn($q) => $q->whereHas('promotion', fn($q) => $q->whereIn('serie_id', $admin->series->pluck('id'))))
+            ->whereHas('procedures', fn($q) => $q->where('status_id', 3))
+            ->count();
+    }
+
+    public function checkAdminHasThisCompany(User $admin, Company $company): bool
+    {
+        return $this->model->newQuery()
+            ->with(['student'])
+            ->whereHas('student', fn($q) => $q->whereHas('promotion', fn($q) => $q->whereIn('serie_id', $admin->series->pluck('id'))))
+            ->where('id', $company->getKey())
+            ->get()
+            ->isEmpty();
+    }
 }

@@ -27,7 +27,7 @@ return new class extends Migration
             $table->boolean('mobility')->default(false)->nullable();
             $table->longText('desire')->nullable();
             $table->longText('motivation')->nullable();
-            $table->foreignId('promotion_id')->nullable();
+            $table->foreignId('promotion_id')->nullable()->references('id')->on('promotions')->onDelete('cascade');
             $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();
             $table->timestamps();

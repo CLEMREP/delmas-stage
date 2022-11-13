@@ -23,23 +23,21 @@ class GoalController extends Controller
 
     public function index(): View
     {
-        /** @var Teacher $teacher */
-        $teacher = Auth::user()?->userable;
+        $user = loggedUser();
 
         return view('delmas.teacher.goals.index', [
             'title' => 'Les objectifs',
-            'goals' => $this->goalRepository->getGoalsByPromotionsPaginated($teacher->promotions),
+            'goals' => $this->goalRepository->getGoalsByPromotionsPaginated($user->promotions),
         ]);
     }
 
     public function create(): View
     {
-        /** @var Teacher $teacher */
-        $teacher = Auth::user()?->userable;
+        $user = loggedUser();
 
         return view('delmas.teacher.goals.create', [
             'title' => 'Création d\'un objectif',
-            'promotions' => $teacher->promotions,
+            'promotions' => $user->promotions,
         ]);
     }
 
@@ -48,10 +46,9 @@ class GoalController extends Controller
         /** @var array $validated */
         $validated = $request->validated();
 
-        /** @var Teacher $teacher */
-        $teacher = Auth::user()?->userable;
+        $user = loggedUser();
 
-        abort_if($this->teacherRepository->checkTeacherHasThisPromotion($teacher, $validated['promotion_id']), 403);
+        abort_if($this->teacherRepository->checkTeacherHasThisPromotion($user, $validated['promotion_id']), 403);
 
         $this->goalRepository->createGoal($validated);
         return redirect(route('teacher.goals.index'))->with('success', 'Votre objectif a bien été crée !');
@@ -59,13 +56,12 @@ class GoalController extends Controller
 
     public function edit(Goal $goal): View
     {
-        /** @var Teacher $teacher */
-        $teacher = Auth::user()?->userable;
+        $user = loggedUser();
 
         return view('delmas.teacher.goals.edit', [
             'title' => 'Édition d\'un objectif',
             'goal' => $goal,
-            'promotions' => $teacher->promotions,
+            'promotions' => $user->promotions,
         ]);
     }
 
@@ -75,10 +71,9 @@ class GoalController extends Controller
         /** @var array $validated */
         $validated = $request->validated();
 
-        /** @var Teacher $teacher */
-        $teacher = Auth::user()?->userable;
+        $user = loggedUser();
 
-        abort_if($this->teacherRepository->checkTeacherHasThisPromotion($teacher, $validated['promotion_id']), 403);
+        abort_if($this->teacherRepository->checkTeacherHasThisPromotion($user, $validated['promotion_id']), 403);
 
         $this->goalRepository->updateGoal($validated, $goal);
         return redirect(route('teacher.goals.index'))->with('success', 'Votre objectif a bien été modifié !');

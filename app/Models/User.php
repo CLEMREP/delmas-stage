@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Enums\Roles;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -89,6 +90,11 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->belongsTo(Promotion::class);
     }
 
+    public function promotions(): BelongsToMany
+    {
+        return $this->belongsToMany(Promotion::class);
+    }
+
     public function companies(): HasMany
     {
         return $this->hasMany(Company::class);
@@ -104,14 +110,9 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(Procedure::class);
     }
 
-    public function promotions(): BelongsToMany
-    {
-        return $this->belongsToMany(Promotion::class);
-    }
-
     public function series(): BelongsToMany
     {
-        return $this->belongsToMany(Serie::class);
+        return $this->BelongsToMany(Serie::class);
     }
 
     ////////////////
@@ -141,5 +142,32 @@ class User extends Authenticatable implements MustVerifyEmail
     public function fullname(): string
     {
         return $this->firstname . ' ' . $this->lastname;
+    }
+
+    public function scopeSearch(Builder $query, string $search = null): Builder
+    {
+        if (!$search) {
+            return $query;
+        }
+
+        return $query->where('firstname', 'like', '%' . $search . '%')
+                ->orWhere('lastname', 'like', '%' . $search . '%')
+                ->orWhere('email', 'like', '%' . $search . '%')
+                ->orWhere('phone', 'like', '%' . $search . '%');
+    }
+
+    public function scopeStudent(Builder $query): Builder
+    {
+        return $query->where('role', Roles::Student);
+    }
+
+    public function scopeTeacher(Builder $query): Builder
+    {
+        return $query->where('role', Roles::Teacher);
+    }
+
+    public function scopeAdmin(Builder $query): Builder
+    {
+        return $query->where('role', Roles::Admin);
     }
 }

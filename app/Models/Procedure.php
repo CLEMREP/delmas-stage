@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -39,9 +40,13 @@ class Procedure extends Model
         'resend' => 'boolean',
     ];
 
+    ////////////////
+    /// RELATIONSHIPS
+    ///////////////
+
     public function student(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class,'user_id');
     }
 
     public function company(): BelongsTo
@@ -57,5 +62,24 @@ class Procedure extends Model
     public function format(): BelongsTo
     {
         return $this->belongsTo(Format::class);
+    }
+
+    public function promotion(): BelongsTo
+    {
+        return $this->belongsTo(Promotion::class);
+    }
+
+    ////////////////
+    /// CUSTOM
+    ///////////////
+
+    public function scopeSearch(Builder $query, string $search = null): Builder
+    {
+        if (!$search) {
+            return $query;
+        }
+
+        return $query->with('company')
+            ->where('company.name', 'like', '%' . $search . '%');
     }
 }

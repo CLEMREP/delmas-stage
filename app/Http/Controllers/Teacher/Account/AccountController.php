@@ -29,10 +29,9 @@ class AccountController extends Controller
         /** @var array $validated */
         $validated = $request->validated();
 
-        /** @var Teacher $teacher */
-        $teacher = Auth::user()?->userable;
+        $user = loggedUser();
 
-        $this->teacherRepository->updateAccount($validated, $teacher);
+        $this->teacherRepository->updateAccount($validated, $user);
 
         return redirect(route('teacher.account.edit'))->with('success', 'La modification du compte a bien été effectuée !');
     }

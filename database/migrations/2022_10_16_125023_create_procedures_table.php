@@ -21,7 +21,7 @@ return new class extends Migration
             $table->boolean('resend')->default(false)->nullable();
             $table->date('date_resend')->nullable();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->foreignId('promotion_id')->constrained();
+            $table->foreignId('promotion_id')->constrained()->onDelete('cascade');
             $table->foreignId('company_id')->constrained()->onDelete('cascade');
         });
     }

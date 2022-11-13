@@ -25,7 +25,7 @@
                 <span class="text-gray-700 dark:text-gray-400">Promotion</span>
                 <select class="block w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 form-select focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray" name="promotion_id">
                     @foreach($promotions as $promotion)
-                        <option value="{{ $promotion->getKey() }}" @if($goal->promotion == $promotion) selected @endif>{{ $promotion->name }}</option>
+                        <option value="{{ $promotion->getKey() }}" @if($goal->promotion->getKey() == $promotion->getKey()) selected @endif>{{ $promotion->name }}</option>
                     @endforeach
                 </select>
             </label>

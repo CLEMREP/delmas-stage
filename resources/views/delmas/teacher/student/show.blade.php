@@ -2,31 +2,31 @@
 
 @section('content')
     <h2 class="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200">
-        Fiche de l'utilisateur : {{ $student->user->firstname . ' ' . $student->user->lastname }}
+        Fiche de l'utilisateur : {{ $student->fullname() }}
     </h2>
 
         <div class="flex flex-col sm:flex-row justify-between w-full">
             <label class="block text-sm w-full mb-4 sm:mb-0 sm:w-1/2 sm:mr-3">
                 <span class="text-gray-700 dark:text-gray-400">Nom</span>
-                <input class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input" name="name" value="{{ $student->user->lastname ?? '-' }}" disabled>
+                <input class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input" name="lastname" value="{{ $student->lastname ?? '-' }}" disabled>
             </label>
             <label class="block text-sm w-full sm:w-1/2">
                 <span class="text-gray-700 dark:text-gray-400">Prénom</span>
-                <input class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input" name="firstname" value="{{ $student->user->firstname ?? '-' }}" disabled>
+                <input class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input" name="firstname" value="{{ $student->firstname ?? '-' }}" disabled>
             </label>
         </div>
 
         <div class="mt-4">
             <label class="block text-sm">
                 <span class="text-gray-700 dark:text-gray-400">Adresse électronique</span>
-                <input class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input" name="email" value="{{ $student->user->email ?? '-' }}" disabled>
+                <input class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input" name="email" value="{{ $student->email ?? '-' }}" disabled>
             </label>
         </div>
 
         <div class="flex flex-col sm:flex-row justify-between mt-4 w-full">
             <label class="block text-sm w-full mb-4 sm:mb-0 sm:w-1/2 sm:mr-3">
                 <span class="text-gray-700 dark:text-gray-400">Promotion</span>
-                <input class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input" name="name" value="{{ $student->promotion->name }}" disabled>
+                <input class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input" name="promotion_id" value="{{ $student->promotion?->name }}" disabled>
             </label>
             <label class="block text-sm w-full sm:w-1/2">
                 <span class="text-gray-700 dark:text-gray-400">Téléphone</span>
@@ -78,6 +78,51 @@
                 <input class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input" name="name" value="{{ $student->mobility ? 'Véhiculé' : 'Non véhiculé' }}" disabled>
             </label>
         </div>
+
+    @if($student->procedures->isNotEmpty())
+        <h2 class="mt-4 text-2xl font-semibold text-gray-700 dark:text-gray-200">Démarches ({{ $student->procedures->count() }}) :</h2>
+        <div class="flex flex-col mt-4 sm:flex-row justify-between w-full mb-8">
+            <table class="w-full whitespace-no-wrap">
+                <thead>
+                <tr class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
+                    <th class="px-4 py-3">Entreprise</th>
+                    <th class="px-4 py-3">Format</th>
+                    <th class="px-4 py-3">Statut</th>
+                    <th class="px-4 py-3">Date</th>
+                    <th class="px-4 py-3">Relance</th>
+                    <th class="px-4 py-3">Date relance</th>
+                </tr>
+                </thead>
+                <tbody class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
+                @foreach($student->procedures as $procedure)
+                    <tr class="text-gray-700 dark:text-gray-400">
+                        <td class="px-4 py-3">
+                            {{ $procedure->company()->first()->name }}
+                        </td>
+                        <td class="px-4 py-3">
+                            {{ $procedure->format()->first()->name }}
+                        </td>
+                        <td class="px-4 py-3 text-sm">
+                            @component('delmas.components.status', [
+                                'statusId' => $procedure->status()->first()->getKey(),
+                                ])
+                            @endcomponent
+                        </td>
+                        <td class="px-4 py-3 text-sm">
+                            {{ $procedure->date->format('Y-m-d') }}
+                        </td>
+                        <td class="px-4 py-3 text-sm">
+                            {{ $procedure->resend ? 'Oui' : 'Non' }}
+                        </td>
+                        <td class="px-4 py-3 text-sm">
+                            {{ $procedure->date_resend ?? '-' }}
+                        </td>
+                    </tr>
+                @endforeach
+                </tbody>
+            </table>
+        </div>
+    @endif
 
     <div class="flex justify-end mb-6">
         <a href="{{ route('teacher.student.index') }}">

@@ -60,12 +60,12 @@ class ProcedureRepository
 
     public function getProceduresOfStudentPaginated(User $student): LengthAwarePaginator
     {
-        return $student->procedures()->paginate(5);
+        return $student->procedures()->paginate(10);
     }
 
     public function allPaginated(): LengthAwarePaginator
     {
-        return $this->model->newQuery()->paginate(5);
+        return $this->model->newQuery()->paginate(10);
     }
 
     public function getAllProceduresOfPromotionsPaginated(Collection $promotions, int $perPage): LengthAwarePaginator
@@ -136,5 +136,22 @@ class ProcedureRepository
     public function countAllProceduresWithStatus(int $status): int
     {
         return $this->model->newQuery()->where('status_id', $status)->count();
+    }
+
+    public function countProceduresInSeries(User $admin): int
+    {
+        return $this->model->newQuery()
+            ->with('student')
+            ->whereHas('student', fn($q) => $q->whereHas('promotion', fn($q) => $q->whereIn('serie_id', $admin->series->pluck('id'))))
+            ->get()
+            ->count();
+    }
+
+    public function getProceduresInSeriesPaginated(User $admin, int $perPage): LengthAwarePaginator
+    {
+        return $this->model->newQuery()
+            ->with('student')
+            ->whereHas('student', fn($q) => $q->whereHas('promotion', fn($q) => $q->whereIn('serie_id', $admin->series->pluck('id'))))
+            ->paginate($perPage);
     }
 }

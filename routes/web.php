@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Student\Account\AccountController as StudentAccountController;
 use App\Http\Controllers\Student\Company\CompanyController as StudentCompanyController;
 use App\Http\Controllers\Student\Contact\ContactController as StudentContactController;
@@ -7,12 +8,21 @@ use App\Http\Controllers\Student\StudentController;
 use App\Http\Controllers\Student\Message\MessageController as StudentMessageController;
 use App\Http\Controllers\Student\Procedure\ProcedureController as StudentProcedureController;
 use App\Http\Controllers\Student\Goal\GoalController as StudentGoalController;
+
 use App\Http\Controllers\Teacher\Procedure\ProcedureController as TeacherProcedureController;
 use App\Http\Controllers\Teacher\Account\AccountController as TeacherAccountController;
 use App\Http\Controllers\Teacher\Student\StudentController as TeacherStudentController;
 use App\Http\Controllers\Teacher\Goal\GoalController as TeacherGoalController;
 use App\Http\Controllers\Teacher\Message\MessageController as TeacherMessageController;
 use App\Http\Controllers\Teacher\TeacherController;
+
+use App\Http\Controllers\Admin\Procedure\ProcedureController as AdminProcedureController;
+use App\Http\Controllers\Admin\Account\AccountController as AdminAccountController;
+use App\Http\Controllers\Admin\Message\MessageController as AdminMessageController;
+use App\Http\Controllers\Admin\Student\StudentController as AdminStudentController;
+use App\Http\Controllers\Admin\Promotion\PromotionController as AdminPromotionController;
+use App\Http\Controllers\Admin\Company\CompanyController as AdminCompanyController;
+use App\Models\Enums\Roles;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -25,8 +35,8 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::middleware(['auth', 'verified'])->group(function () {
-    Route::name('student.')->middleware('student')->group(function () {
+Route::middleware(['auth', 'verified'])->prefix('/tableau-de-bord')->group(function () {
+    Route::name('student.')->middleware('role:'.Roles::Student->value)->group(function () {
         Route::get('/', [StudentController::class, 'index'])->name('index');
 
         Route::name('procedures.')->group(function () {
@@ -74,16 +84,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
     });
 
 
-
-
-    Route::name('teacher.')->middleware('teacher')->prefix('/tableau-de-bord/')->group(function () {
+    Route::name('teacher.')->middleware('role:'.Roles::Teacher->value)->prefix('/professeur')->group(function () {
         Route::get('/', [TeacherController::class, 'index'])->name('index');
 
         Route::name('student.')->group(function () {
             Route::get('/mes-eleves', [TeacherStudentController::class, 'index'])->name('index');
-            Route::get('/mes-eleves/fiche/{student}', [TeacherStudentController::class, 'show'])->name('show');
-            Route::get('/mes-eleves/edition/{student}', [TeacherStudentController::class, 'edit'])->name('edit');
-            Route::post('/mes-eleves/edition/{student}', [TeacherStudentController::class, 'update'])->name('update');
+            Route::get('/mes-eleves/fiche/{user}', [TeacherStudentController::class, 'show'])->name('show');
+            Route::get('/mes-eleves/edition/{user}', [TeacherStudentController::class, 'edit'])->name('edit');
+            Route::post('/mes-eleves/edition/{user}', [TeacherStudentController::class, 'update'])->name('update');
         });
 
         Route::name('procedure.')->group(function () {
@@ -109,8 +117,48 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::get('/message', [TeacherMessageController::class, 'index'])->name('index');
         });
     });
-});
 
-Route::get('/admin', function () { return "Hello"; })->name('un');
+    Route::name('admin.')->middleware('role:'.Roles::Admin->value)->prefix('/admin')->group(function () {
+        Route::get('/', [AdminController::class, 'index'])->name('index');
+
+        Route::name('student.')->group(function () {
+            Route::get('/gestion-des-etudiants', [AdminStudentController::class, 'index'])->name('index');
+            Route::get('/gestion-des-etudiants/creation', [AdminStudentController::class, 'create'])->name('create');
+            Route::post('/gestion-des-etudiants/creation', [AdminStudentController::class, 'store'])->name('store');
+            Route::post('/gestion-des-etudiants/supprimer/{user}', [AdminStudentController::class, 'destroy'])->name('destroy');
+            Route::get('/gestion-des-etudiants/fiche/{user}', [AdminStudentController::class, 'show'])->name('show');
+            Route::get('/gestion-des-etudiants/edition/{user}', [AdminStudentController::class, 'edit'])->name('edit');
+            Route::post('/gestion-des-etudiants/edition/{user}', [AdminStudentController::class, 'update'])->name('update');
+        });
+
+        Route::name('procedure.')->group(function () {
+            Route::get('/suivi-des-demarches', [AdminProcedureController::class, 'index'])->name('index');
+            Route::get('/suivi-des-demarches/fiche/{procedure}', [AdminProcedureController::class, 'show'])->name('show');
+        });
+
+        Route::name('company.')->group(function () {
+            Route::get('/liste-des-entreprises', [AdminCompanyController::class, 'index'])->name('index');
+            Route::get('/liste-des-entreprises/fiche/{company}', [AdminCompanyController::class, 'show'])->name('show');
+        });
+
+        Route::name('promotions.')->group(function () {
+            Route::get('/gestion-des-promotions', [AdminPromotionController::class, 'index'])->name('index');
+            Route::get('/gestion-des-promotions/creation', [AdminPromotionController::class, 'create'])->name('create');
+            Route::post('/gestion-des-promotions/creation', [AdminPromotionController::class, 'store'])->name('store');
+            Route::post('/gestion-des-promotions/supprimer/{promotion}', [AdminPromotionController::class, 'destroy'])->name('destroy');
+            Route::get('/gestion-des-promotions/edition/{promotion}', [AdminPromotionController::class, 'edit'])->name('edit');
+            Route::post('/gestion-des-promotions/edition/{promotion}', [AdminPromotionController::class, 'update'])->name('update');
+        });
+
+        Route::name('account.')->group(function () {
+            Route::get('/mon-compte', [AdminAccountController::class, 'edit'])->name('edit');
+            Route::post('/mon-compte', [AdminAccountController::class, 'update'])->name('update');
+        });
+
+        Route::name('message.')->group(function () {
+            Route::get('/message', [AdminMessageController::class, 'index'])->name('index');
+        });
+    });
+});
 
 require __DIR__.'/auth.php';

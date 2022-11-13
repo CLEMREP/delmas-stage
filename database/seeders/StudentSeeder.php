@@ -50,9 +50,18 @@ class StudentSeeder extends Seeder
                         'status_id' => Status::all()->random()->getKey(),
                         'user_id' => $user->getKey(),
                         'company_id' => $company->getKey(),
+                        'promotion_id' => $promotion->getKey(),
+                        'date' => now()->subDays(random_int(1, 30)),
                     ])->create();
                 }
             }
         }
+
+        User::find(3)->update([
+            'firstname' => 'Clément',
+            'lastname' => 'REPEL',
+            'email' => 'etudiant@etudiant.fr',
+            ]
+        );
     }
 }
