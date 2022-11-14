@@ -46,4 +46,13 @@ class AdminRepository
             ->get()
             ->isEmpty();
     }
+
+    public function checkAdminHasThisTeacher(User $admin, User $teacher): bool
+    {
+        return $this->model::teacher()->with('promotions')
+            ->whereHas('promotions', fn($q) => $q->whereIn('serie_id', $admin->series->pluck('id')))
+            ->where('id', $teacher->getKey())
+            ->get()
+            ->isEmpty();
+    }
 }

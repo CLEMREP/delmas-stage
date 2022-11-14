@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Enums\Roles;
 use App\Models\Student;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
@@ -41,8 +42,6 @@ class RegisteredUserController extends Controller
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
-        $student = Student::factory()->create();
-
         /** @var string $password */
         $password = $request->password;
 
@@ -51,8 +50,7 @@ class RegisteredUserController extends Controller
             'firstname' => $request->firstname,
             'email' => $request->email,
             'password' => Hash::make($password),
-            'userable_type' => $student::class,
-            'userable_id' => $student->getKey(),
+            'role' => Roles::Student,
         ]);
 
         event(new Registered($user));

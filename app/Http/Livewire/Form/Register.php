@@ -2,7 +2,7 @@
 
 namespace App\Http\Livewire\Form;
 
-use App\Models\Student;
+use App\Models\Enums\Roles;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Auth\Events\Registered;
@@ -85,22 +85,18 @@ class Register extends Component
             'mobility' => 'nullable|boolean',
         ]);
 
-        $student = Student::create([
+        $user = User::create([
+            'firstname' => $this->firstname,
+            'lastname' => $this->lastname,
+            'email' => $this->email,
+            'password' => Hash::make($this->password),
+            'role' => Roles::Student,
             'address' => $this->address,
             'city' => $this->city,
             'zip' => $this->zip,
             'desire' => $this->desire,
             'motivation' => $this->motivation,
             'mobility' => $this->mobility,
-        ]);
-
-        $user = User::create([
-            'firstname' => $this->firstname,
-            'lastname' => $this->lastname,
-            'email' => $this->email,
-            'password' => Hash::make($this->password),
-            'userable_type' => $student::class,
-            'userable_id' => $student->getKey(),
         ]);
 
         event(new Registered($user));

@@ -54,7 +54,7 @@ class CompanyController extends Controller
         /** @var int $contactId */
         $contactId = $validated['contact_id'];
 
-        abort_if($this->studentRepository->checkStudentHasThisContact($user, $contactId), 404);
+        abort_if($this->studentRepository->checkStudentHasThisContact($user, $contactId), 403);
 
         $this->companyRepository->createCompany($validated, $user);
 
@@ -67,7 +67,7 @@ class CompanyController extends Controller
 
         $contact = $this->companyRepository->getContactOfCompany($company);
 
-        abort_if($this->companyRepository->companyBelongsToStudent($user, $company), 404);
+        abort_if($this->companyRepository->companyBelongsToStudent($user, $company), 403);
 
         return view('delmas.student.companies.show', [
             'title' => 'Fiche entreprise de '.$company->name,
@@ -80,7 +80,7 @@ class CompanyController extends Controller
     {
         $user = loggedUser();
 
-        abort_if($this->companyRepository->companyBelongsToStudent($user, $company), 404);
+        abort_if($this->companyRepository->companyBelongsToStudent($user, $company), 403);
 
         $contacts = $this->contactRepository->getContactsFromStudent($user);
 
@@ -101,9 +101,9 @@ class CompanyController extends Controller
         /** @var int $contactId */
         $contactId = $validated['contact_id'];
 
-        abort_if($this->companyRepository->companyBelongsToStudent($user, $company), 404);
+        abort_if($this->companyRepository->companyBelongsToStudent($user, $company), 403);
 
-        abort_if($this->studentRepository->checkStudentHasThisContact($user, $contactId), 404);
+        abort_if($this->studentRepository->checkStudentHasThisContact($user, $contactId), 403);
 
         $this->companyRepository->updateCompany($validated, $company, $user);
 
@@ -114,7 +114,7 @@ class CompanyController extends Controller
     {
         $user = loggedUser();
 
-        abort_if($this->companyRepository->companyBelongsToStudent($user, $company), 404);
+        abort_if($this->companyRepository->companyBelongsToStudent($user, $company), 403);
 
         $this->companyRepository->deleteCompany($company);
 

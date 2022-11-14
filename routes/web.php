@@ -20,6 +20,7 @@ use App\Http\Controllers\Admin\Procedure\ProcedureController as AdminProcedureCo
 use App\Http\Controllers\Admin\Account\AccountController as AdminAccountController;
 use App\Http\Controllers\Admin\Message\MessageController as AdminMessageController;
 use App\Http\Controllers\Admin\Student\StudentController as AdminStudentController;
+use App\Http\Controllers\Admin\Teacher\TeacherController as AdminTeacherController;
 use App\Http\Controllers\Admin\Promotion\PromotionController as AdminPromotionController;
 use App\Http\Controllers\Admin\Company\CompanyController as AdminCompanyController;
 use App\Models\Enums\Roles;
@@ -129,6 +130,15 @@ Route::middleware(['auth', 'verified'])->prefix('/tableau-de-bord')->group(funct
             Route::get('/gestion-des-etudiants/fiche/{user}', [AdminStudentController::class, 'show'])->name('show');
             Route::get('/gestion-des-etudiants/edition/{user}', [AdminStudentController::class, 'edit'])->name('edit');
             Route::post('/gestion-des-etudiants/edition/{user}', [AdminStudentController::class, 'update'])->name('update');
+        });
+
+        Route::name('teacher.')->group(function () {
+            Route::get('/gestion-des-professeurs', [AdminTeacherController::class, 'index'])->name('index');
+            Route::get('/gestion-des-professeurs/creation', [AdminTeacherController::class, 'create'])->name('create');
+            Route::post('/gestion-des-professeurs/creation', [AdminTeacherController::class, 'store'])->name('store');
+            Route::post('/gestion-des-professeurs/supprimer/{user}', [AdminTeacherController::class, 'destroy'])->name('destroy');
+            Route::get('/gestion-des-professeurs/edition/{user}', [AdminTeacherController::class, 'edit'])->name('edit');
+            Route::post('/gestion-des-professeurs/edition/{user}', [AdminTeacherController::class, 'update'])->name('update');
         });
 
         Route::name('procedure.')->group(function () {

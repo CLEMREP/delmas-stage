@@ -19,7 +19,7 @@ class CompaniesTable extends Component
 
         return view('livewire.student.companies-table',[
             'companies' => Company::with('student')
-                ->where('user_id', $student->getKey())
+                ->whereHas('student', fn($q) => $q->whereHas('promotion', fn($q) => $q->where('promotion_id', $student->promotion->getKey())))
                 ->scopes(['search' => $this->search])
                 ->paginate(10),
         ]);

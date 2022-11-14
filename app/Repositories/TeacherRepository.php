@@ -5,10 +5,12 @@ namespace App\Repositories;
 use App\Http\Resources\StudentResource;
 use App\Http\Resources\TeacherResource;
 use App\Http\Resources\UserResource;
+use App\Models\Enums\Roles;
 use App\Models\Teacher;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\Hash;
 
 class TeacherRepository
 {
@@ -30,23 +32,23 @@ class TeacherRepository
         return $students;
     }
 
-    public function allStudentsPaginated(User $teacher)
+
+
+    public function create(array $data): User
     {
-        $students = $this->allStudents($teacher);
 
-        $perPage = 10;
-        $currentPage = request("page") ?? 1;
+        $teacher = $this->model->create([
+            'firstname' => $data['firstname'],
+            'lastname' => $data['lastname'],
+            'email' => $data['email'],
+            'phone' => $data['phone'],
+            'password' => Hash::make('password'),
+            'role' => Roles::Teacher,
+        ]);
 
-        return new LengthAwarePaginator(
-            $students->forPage($currentPage, $perPage),
-            $students->count(),
-            $perPage,
-            $currentPage,
-            [
-                'path' => request()->url(),
-                'query' => request()->query(),
-            ]
-        );
+        $teacher->promotions()->attach($data['promotion_id']);
+
+        return $teacher;
     }
 
     /**
@@ -66,6 +68,11 @@ class TeacherRepository
         }
 
         return $teacher->update($attributes);
+    }
+
+    public function delete(User $teacher): bool|null
+    {
+        return $teacher->delete();
     }
 
     public function checkTeacherHasThisPromotion(User $teacher, int $promotionId): bool
