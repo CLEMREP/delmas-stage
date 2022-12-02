@@ -2,7 +2,6 @@
 
 namespace App\Http\Middleware;
 
-use App\Models\Enums\Roles;
 use Closure;
 use Illuminate\Http\Request;
 
@@ -17,7 +16,7 @@ class EnsureUserHasRole
      */
     public function handle(Request $request, Closure $next, string $role)
     {
-        if (auth()?->user()->role->value == $role) {
+        if (loggedUser()->role->value == $role) {
             return $next($request);
         }
 

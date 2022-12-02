@@ -19,7 +19,6 @@ class CompanyRequest extends FormRequest
             'address' => ['required', 'string'],
             'city' => ['required', 'string'],
             'zip' => 'required|regex:/^[0-9]{5}(?:-[0-9]{4})?$/',
-            'contact_id' => ['required', 'integer'],
         ];
     }
 

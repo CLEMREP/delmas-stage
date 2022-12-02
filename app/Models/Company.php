@@ -2,12 +2,11 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 
 /**
  * @property int $id
@@ -17,7 +16,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @property string $zip
  * @property string $phone
  * @property int $user_id
- * @property int $contact_id
+ * @property int $promotion_id
  * @property Contact $contact
  * @property Student $student
  */
@@ -37,21 +36,21 @@ class Company extends Model
         'city',
         'zip',
         'user_id',
-        'contact_id',
+        'promotion_id',
     ];
 
     ////////////////
     /// RELATIONSHIPS
     ///////////////
 
-    public function contact(): BelongsTo
+    public function contacts(): HasMany
     {
-        return $this->belongsTo(Contact::class);
+        return $this->HasMany(Contact::class);
     }
 
     public function student(): BelongsTo
     {
-        return $this->belongsTo(User::class,'user_id');
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     public function procedures(): HasMany
@@ -65,19 +64,19 @@ class Company extends Model
 
     public function completeAddress(): string
     {
-        return $this->address . ', ' . $this->zip . ', ' . $this->city;
+        return $this->address.', '.$this->zip.', '.$this->city;
     }
 
-    public function scopeSearch($query, $search = null)
+    public function scopeSearch(Builder $query, string $search = null): Builder
     {
-        if (!$search) {
+        if (! $search) {
             return $query;
         }
 
-        return $query->where('name', 'like', '%' . $search . '%')
-            ->orWhere('phone', 'like', '%' . $search . '%')
-            ->orWhere('address', 'like', '%' . $search . '%')
-            ->orWhere('city', 'like', '%' . $search . '%')
-            ->orWhere('zip', 'like', '%' . $search . '%');
+        return $query->where('name', 'like', '%'.$search.'%')
+            ->orWhere('phone', 'like', '%'.$search.'%')
+            ->orWhere('address', 'like', '%'.$search.'%')
+            ->orWhere('city', 'like', '%'.$search.'%')
+            ->orWhere('zip', 'like', '%'.$search.'%');
     }
 }

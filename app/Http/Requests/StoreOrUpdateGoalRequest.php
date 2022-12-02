@@ -15,14 +15,14 @@ class StoreOrUpdateGoalRequest extends FormRequest
     {
         return [
             'content' => ['required', 'string', 'max:255'],
-            'promotion_id' => ['required']
+            'promotion_id' => ['required'],
         ];
     }
 
     /**
      * Get the error messages for the defined validation rules.
      *
-     * @return array
+     * @return array<string, string>
      */
     public function messages()
     {

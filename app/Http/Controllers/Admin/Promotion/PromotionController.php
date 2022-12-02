@@ -7,7 +7,6 @@ use App\Http\Requests\StoreOrUpdatePromotionRequest;
 use App\Models\Promotion;
 use App\Repositories\AdminRepository;
 use App\Repositories\PromotionRepository;
-use App\Repositories\SerieRepository;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 
@@ -16,13 +15,13 @@ class PromotionController extends Controller
     public function __construct(
         private PromotionRepository $promotionRepository,
         private AdminRepository $adminRepository,
-        private SerieRepository $serieRepository
     ) {
     }
 
     public function index(): View
     {
         $admin = loggedUser();
+
         return view('delmas.admin.promotions.index', [
             'title' => 'Liste des promotions',
             'promotions' => $this->promotionRepository->getPromotionsInSeriesPaginated($admin),
@@ -50,6 +49,7 @@ class PromotionController extends Controller
         abort_if($this->adminRepository->checkAdminHasThisSerie($admin, $validated['serie_id']), 403);
 
         $this->promotionRepository->createPromotion($validated);
+
         return redirect(route('admin.promotions.index'))->with('success', 'Votre promotion a bien été créée !');
     }
 
@@ -74,12 +74,14 @@ class PromotionController extends Controller
         abort_if($this->adminRepository->checkAdminHasThisSerie($admin, $validated['serie_id']), 403);
 
         $this->promotionRepository->updatePromotion($validated, $promotion);
+
         return redirect(route('admin.promotions.index'))->with('success', 'Votre promotion a bien été modifiée !');
     }
 
     public function destroy(Promotion $promotion): RedirectResponse
     {
         $this->promotionRepository->deletePromotion($promotion);
+
         return redirect(route('admin.promotions.index'))->with('success', 'Votre promotion a bien été supprimée !');
     }
 }

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Providers\RouteServiceProvider;
+use App\Models\Enums\Roles;
 use Illuminate\Http\Request;
 
 class EmailVerificationNotificationController extends Controller
@@ -17,7 +17,13 @@ class EmailVerificationNotificationController extends Controller
     public function store(Request $request)
     {
         if ($request->user()?->hasVerifiedEmail()) {
-            return redirect()->intended(RouteServiceProvider::HOME);
+            $route = match ($request->user()->role) {
+                Roles::Admin => 'admin.index',
+                Roles::Teacher => 'teacher.index',
+                default => 'student.index',
+            };
+
+            return redirect()->intended($route);
         }
 
         $request->user()?->sendEmailVerificationNotification();

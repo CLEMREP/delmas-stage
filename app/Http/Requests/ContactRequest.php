@@ -24,6 +24,7 @@ class ContactRequest extends FormRequest
                 'max:255',
             ],
             'job_id' => ['required', 'integer'],
+            'company_id' => ['required', 'integer'],
         ];
     }
 

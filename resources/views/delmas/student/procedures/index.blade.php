@@ -44,6 +44,7 @@
                     <thead>
                     <tr class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
                         <th class="px-4 py-3">Entreprise</th>
+                        <th class="px-4 py-3">Contact</th>
                         <th class="px-4 py-3">Format</th>
                         <th class="px-4 py-3">Statut</th>
                         <th class="px-4 py-3">Date</th>
@@ -56,14 +57,17 @@
                     @foreach($procedures as $procedure)
                         <tr class="text-gray-700 dark:text-gray-400">
                             <td class="px-4 py-3">
-                                {{ $procedure->company()->first()->name }}
+                                {{ $procedure->company->name }}
                             </td>
                             <td class="px-4 py-3">
-                                {{ $procedure->format()->first()->name }}
+                                {{ $procedure->contact->fullname() }}
+                            </td>
+                            <td class="px-4 py-3">
+                                {{ $procedure->format->name }}
                             </td>
                             <td class="px-4 py-3 text-sm">
                                 @component('delmas.components.status', [
-                                    'statusId' => $procedure->status()->first()->getKey(),
+                                    'statusId' => $procedure->status->getKey(),
                                     ])
                                 @endcomponent
                             </td>

@@ -5,15 +5,11 @@ namespace App\Http\Controllers\Admin\Student;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreStudentOrTeacherRequest;
 use App\Http\Requests\UpdateStudentRequest;
-use App\Models\Company;
-use App\Models\Teacher;
 use App\Models\User;
 use App\Repositories\PromotionRepository;
 use App\Repositories\SerieRepository;
 use App\Repositories\StudentRepository;
-use App\Repositories\TeacherRepository;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
 class StudentController extends Controller
@@ -35,7 +31,7 @@ class StudentController extends Controller
     public function show(User $user): View
     {
         return view('delmas.admin.student.show', [
-            'title' => 'Détails de l\'étudiant ' . $user->fullname(),
+            'title' => 'Détails de l\'étudiant '.$user->fullname(),
             'student' => $user,
         ]);
     }
@@ -70,7 +66,7 @@ class StudentController extends Controller
         $admin = loggedUser();
 
         return view('delmas.admin.student.edit', [
-            'title' => 'Modifier l\'étudiant ' . $user->fullname(),
+            'title' => 'Modifier l\'étudiant '.$user->fullname(),
             'student' => $user,
             'promotions' => $this->promotionRepository->getPromotionsInSeries($admin),
         ]);
@@ -86,7 +82,8 @@ class StudentController extends Controller
         abort_if($this->studentRepository->checkAdminHasThisStudent($admin, $user), 403);
 
         $this->studentRepository->updateAccount($validated, $user);
-        return redirect()->route('admin.student.index')->with('success', 'L\'étudiant ' . $user->fullname() . ' a bien été modifié.');
+
+        return redirect()->route('admin.student.index')->with('success', 'L\'étudiant '.$user->fullname().' a bien été modifié.');
     }
 
     public function destroy(User $user): RedirectResponse
@@ -96,6 +93,7 @@ class StudentController extends Controller
         abort_if($this->studentRepository->checkAdminHasThisStudent($admin, $user), 403);
 
         $this->studentRepository->delete($user);
-        return redirect(route('admin.student.index'))->with('success', 'L\'étudiant '.$user->fullname() . ' a bien été supprimée !');
+
+        return redirect(route('admin.student.index'))->with('success', 'L\'étudiant '.$user->fullname().' a bien été supprimée !');
     }
 }

@@ -3,16 +3,9 @@
 namespace App\Http\Controllers\Admin\Account;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\UpdateStudentAccountRequest;
 use App\Http\Requests\UpdateTeacherAccountRequest;
-use App\Models\Student;
-use App\Models\Teacher;
-use App\Models\User;
 use App\Repositories\AdminRepository;
-use App\Repositories\StudentRepository;
-use App\Repositories\TeacherRepository;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
 class AccountController extends Controller
@@ -21,7 +14,7 @@ class AccountController extends Controller
     {
     }
 
-    public function edit(User $admin): View
+    public function edit(): View
     {
         return view('delmas.admin.account.account', ['title' => 'Mon compte', 'user' => loggedUser()]);
     }

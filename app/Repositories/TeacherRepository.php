@@ -2,14 +2,9 @@
 
 namespace App\Repositories;
 
-use App\Http\Resources\StudentResource;
-use App\Http\Resources\TeacherResource;
-use App\Http\Resources\UserResource;
 use App\Models\Enums\Roles;
-use App\Models\Teacher;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Hash;
 
 class TeacherRepository
@@ -18,12 +13,19 @@ class TeacherRepository
     {
     }
 
+    public function countTeachers(): int
+    {
+        return $this->model->newQuery()->where('role', Roles::Teacher->value)->count();
+    }
+
     public function allStudents(User $teacher): Collection
     {
         $promotions = $teacher->promotions;
+
         $students = new Collection();
 
         foreach ($promotions as $promotion) {
+            /* @phpstan-ignore-next-line */
             foreach ($promotion->students as $student) {
                 $students->add($student);
             }
@@ -32,11 +34,12 @@ class TeacherRepository
         return $students;
     }
 
-
-
+    /**
+     * @param  array<string>  $data
+     * @return User
+     */
     public function create(array $data): User
     {
-
         $teacher = $this->model->create([
             'firstname' => $data['firstname'],
             'lastname' => $data['lastname'],
@@ -63,9 +66,12 @@ class TeacherRepository
             'phone' => $data['phone'] ?? '',
         ];
 
-        if (!empty($data['password'])) {
+        if (! empty($data['password'])) {
             $attributes['password'] = Hash::make($data['password']);
         }
+
+        $teacher->promotions()->detach();
+        $teacher->promotions()->attach($data['promotion_id']);
 
         return $teacher->update($attributes);
     }
@@ -87,9 +93,10 @@ class TeacherRepository
     {
         $teacher = loggedUser();
 
-        return $teacher->promotions()
-        ->whereHas('students', fn($q) => $q->where('id', $student->getKey()))
-            ->get()
-            ->isEmpty();
+        $student = $teacher->promotions()
+            ->whereHas('students', fn ($q) => $q->where('id', $student->getKey()))
+            ->get();
+
+        return $student->isEmpty();
     }
 }

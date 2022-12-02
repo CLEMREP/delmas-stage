@@ -2,9 +2,9 @@
 
 namespace App\Repositories;
 
-use App\Models\Format;
+use App\Models\Enums\Roles;
 use App\Models\User;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Hash;
 
 class AdminRepository
@@ -13,6 +13,41 @@ class AdminRepository
     {
     }
 
+    public function allAdminsPaginated(): LengthAwarePaginator
+    {
+        return $this->model->newQuery()->admin()->paginate(12);
+    }
+
+    public function countAdmins(): int
+    {
+        return $this->model->newQuery()->admin()->count();
+    }
+
+    /**
+     * @param  array<string>  $data
+     * @return User
+     */
+    public function createAdmin(array $data): User
+    {
+        $admin = $this->model->create([
+            'firstname' => $data['firstname'],
+            'lastname' => $data['lastname'],
+            'phone' => $data['phone'],
+            'email' => $data['email'],
+            'role' => Roles::Admin,
+            'password' => Hash::make('password'),
+        ]);
+
+        $admin->series()->attach($data['serie_id']);
+
+        return $admin;
+    }
+
+    /**
+     * @param  array<string>  $data
+     * @param  User  $admin
+     * @return bool|null
+     */
     public function updateAccount(array $data, User $admin): bool|null
     {
         $attributes = [
@@ -22,11 +57,19 @@ class AdminRepository
             'phone' => $data['phone'] ?? '',
         ];
 
-        if (!empty($data['password'])) {
+        if (! empty($data['password'])) {
             $attributes['password'] = Hash::make($data['password']);
         }
 
+        $admin->series()->detach();
+        $admin->series()->attach($data['serie_id']);
+
         return $admin->update($attributes);
+    }
+
+    public function delete(User $admin): bool|null
+    {
+        return $admin->delete();
     }
 
     public function countUsersInAdminSeries(User $admin): int
@@ -34,25 +77,26 @@ class AdminRepository
         return $this->model
             ->newQuery()
             ->with('promotion')
-            ->whereHas('promotion', fn($q) => $q->whereIn('serie_id', $admin->series->pluck('id')))
-            ->get()
+            ->whereHas('promotion', fn ($q) => $q->whereIn('serie_id', $admin->series->pluck('id')))
             ->count();
     }
 
     public function checkAdminHasThisSerie(User $teacher, int $serieId): bool
     {
-        return $teacher->series() /** @phpstan-ignore-line */
-        ->where('id', $serieId)
-            ->get()
-            ->isEmpty();
+        $request = $teacher->series()
+            ->where('id', $serieId)
+            ->get();
+
+        return $request->isEmpty();
     }
 
     public function checkAdminHasThisTeacher(User $admin, User $teacher): bool
     {
-        return $this->model::teacher()->with('promotions')
-            ->whereHas('promotions', fn($q) => $q->whereIn('serie_id', $admin->series->pluck('id')))
+        $request = $this->model::teacher()->with('promotions')
+            ->whereHas('promotions', fn ($q) => $q->whereIn('serie_id', $admin->series->pluck('id')))
             ->where('id', $teacher->getKey())
-            ->get()
-            ->isEmpty();
+            ->get();
+
+        return $request->isEmpty();
     }
 }

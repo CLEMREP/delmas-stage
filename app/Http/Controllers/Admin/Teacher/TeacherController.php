@@ -5,16 +5,13 @@ namespace App\Http\Controllers\Admin\Teacher;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreStudentOrTeacherRequest;
 use App\Http\Requests\UpdateStudentRequest;
-use App\Models\Company;
-use App\Models\Teacher;
+use App\Models\Enums\Roles;
 use App\Models\User;
 use App\Repositories\AdminRepository;
 use App\Repositories\PromotionRepository;
 use App\Repositories\SerieRepository;
-use App\Repositories\StudentRepository;
 use App\Repositories\TeacherRepository;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
 class TeacherController extends Controller
@@ -50,8 +47,9 @@ class TeacherController extends Controller
 
         /** @var array $validated */
         $validated = $request->validated();
+        $validated['promotion_id'] = explode(',', $validated['promotion_id']);
 
-        abort_if($this->serieRepository->checkSeriesHasThisPromotion($admin, $validated['promotion_id']), 403);
+        abort_if($this->serieRepository->checkSeriesHasThesePromotions($admin, $validated['promotion_id']), 403);
 
         $this->teacherRepository->create($validated);
 
@@ -63,8 +61,11 @@ class TeacherController extends Controller
     {
         $admin = loggedUser();
 
+        abort_if($user->role != Roles::Teacher, 403);
+        abort_if($this->adminRepository->checkAdminHasThisTeacher($admin, $user), 403);
+
         return view('delmas.admin.teacher.edit', [
-            'title' => 'Modifier le professeur ' . $user->fullname(),
+            'title' => 'Modifier le professeur '.$user->fullname(),
             'teacher' => $user,
             'promotions' => $this->promotionRepository->getPromotionsInSeries($admin),
         ]);
@@ -76,11 +77,14 @@ class TeacherController extends Controller
 
         /** @var array $validated */
         $validated = $request->validated();
+        $validated['promotion_id'] = explode(',', $validated['promotion_id']);
 
+        abort_if($this->serieRepository->checkSeriesHasThesePromotions($admin, $validated['promotion_id']), 403);
         abort_if($this->adminRepository->checkAdminHasThisTeacher($admin, $user), 403);
 
         $this->teacherRepository->updateAccount($validated, $user);
-        return redirect()->route('admin.teacher.index')->with('success', 'Le professeur ' . $user->fullname() . ' a bien été modifié.');
+
+        return redirect()->route('admin.teacher.index')->with('success', 'Le professeur '.$user->fullname().' a bien été modifié.');
     }
 
     public function destroy(User $user): RedirectResponse
@@ -90,6 +94,7 @@ class TeacherController extends Controller
         abort_if($this->adminRepository->checkAdminHasThisTeacher($admin, $user), 403);
 
         $this->teacherRepository->delete($user);
-        return redirect(route('admin.teacher.index'))->with('success', 'L\'étudiant '.$user->fullname() . ' a bien été supprimée !');
+
+        return redirect(route('admin.teacher.index'))->with('success', 'Le professeur '.$user->fullname().' a bien été supprimée !');
     }
 }

@@ -28,22 +28,22 @@
     <div class="flex flex-col sm:flex-row justify-between w-full">
         <label class="block text-sm w-full mb-4 sm:mb-0 sm:w-1/2 sm:mr-3">
             <span class="text-gray-700 dark:text-gray-400">Nom complet</span>
-            <input class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input" value="{{ $procedure->company->contact->fullname() }}" placeholder="Binary-Cloud" disabled>
+            <input class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input" value="{{ $procedure->contact->fullname() }}" placeholder="Binary-Cloud" disabled>
         </label>
         <label class="block text-sm w-full sm:w-1/2">
             <span class="text-gray-700 dark:text-gray-400">Téléphone</span>
-            <input class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input" value="{{ $procedure->company->contact->phone }}" placeholder="07 61 38 20 21" disabled>
+            <input class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input" value="{{ $procedure->contact->phone }}" placeholder="07 61 38 20 21" disabled>
         </label>
     </div>
 
     <div class="flex flex-col sm:flex-row justify-between w-full mt-4">
         <label class="block text-sm w-full mb-4 sm:mb-0 sm:w-1/2 sm:mr-3">
             <span class="text-gray-700 dark:text-gray-400">Adresse électronique</span>
-            <input class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input" value="{{ $procedure->company->contact->email }}" placeholder="contact@clement-repel.fr" disabled>
+            <input class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input" value="{{ $procedure->contact->email }}" placeholder="contact@clement-repel.fr" disabled>
         </label>
         <label class="block text-sm w-full sm:w-1/2">
             <span class="text-gray-700 dark:text-gray-400">Intitulé du métier</span>
-            <input class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input" value="{{ $procedure->company->contact->job()->first()->name }}" placeholder="07 61 38 20 21" disabled>
+            <input class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input" value="{{ $procedure->contact->job->name }}" placeholder="Directeur" disabled>
         </label>
     </div>
 

@@ -3,9 +3,7 @@
 namespace App\Http\Controllers\Admin\Message;
 
 use App\Http\Controllers\Controller;
-use App\Models\Teacher;
 use App\Repositories\TeacherRepository;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
 class MessageController extends Controller

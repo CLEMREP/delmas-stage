@@ -9,7 +9,6 @@ use App\Models\Job;
 use App\Models\Procedure;
 use App\Models\Promotion;
 use App\Models\Status;
-use App\Models\Student;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 
@@ -25,8 +24,7 @@ class StudentSeeder extends Seeder
         $job = Job::all()->random();
         $promotions = Promotion::all();
 
-        foreach ($promotions as $promotion)
-        {
+        foreach ($promotions as $promotion) {
             for ($i = 0; $i <= 15; $i++) {
                 $user = User::factory()->create([
                     'promotion_id' => $promotion->getKey(),
@@ -35,14 +33,15 @@ class StudentSeeder extends Seeder
                 $ramdon = random_int(5, 8);
 
                 for ($j = 0; $j <= $ramdon; $j++) {
+                    $company = Company::factory([
+                        'user_id' => $user->getKey(),
+                        'promotion_id' => $promotion->getKey(),
+                    ])->create();
+
                     $contact = Contact::factory([
                         'user_id' => $user->getKey(),
                         'job_id' => $job->getKey(),
-                    ])->create();
-
-                    $company = Company::factory([
-                        'user_id' => $user->getKey(),
-                        'contact_id' => $contact->getKey(),
+                        'company_id' => $company->getKey(),
                     ])->create();
 
                     Procedure::factory([
@@ -52,16 +51,17 @@ class StudentSeeder extends Seeder
                         'company_id' => $company->getKey(),
                         'promotion_id' => $promotion->getKey(),
                         'date' => now()->subDays(random_int(1, 30)),
+                        'contact_id' => $contact->getKey(),
                     ])->create();
                 }
             }
         }
 
-        User::find(3)->update([
+        User::find(4)->update([
             'firstname' => 'Clément',
             'lastname' => 'REPEL',
             'email' => 'etudiant@etudiant.fr',
-            ]
+        ]
         );
     }
 }

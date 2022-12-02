@@ -26,7 +26,7 @@ class StoreStudentOrTeacherRequest extends FormRequest
                     'max:255',
                     Rule::unique('users', 'email'),
                 ],
-                'promotion_id' => ['required', 'integer'],
+                'promotion_id' => ['required'],
             ];
     }
 

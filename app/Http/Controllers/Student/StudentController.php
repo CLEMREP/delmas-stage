@@ -3,11 +3,8 @@
 namespace App\Http\Controllers\Student;
 
 use App\Http\Controllers\Controller;
-use App\Models\Student;
-use App\Models\User;
 use App\Repositories\GoalRepository;
 use App\Repositories\ProcedureRepository;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
 class StudentController extends Controller

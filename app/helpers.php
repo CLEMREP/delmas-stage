@@ -1,9 +1,9 @@
 <?php
 
-if (!function_exists('loggedUser')) {
-    function loggedUser(): \App\Models\User
+if (! function_exists('loggedUser')) {
+    function loggedUser(): App\Models\User
     {
-        if (!auth()->check()) {
+        if (! auth()->check()) {
             throw new \Illuminate\Auth\AuthenticationException();
         }
 

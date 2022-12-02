@@ -340,6 +340,7 @@
             </main>
         </div>
     </div>
+    @yield('scripts')
     <livewire:scripts />
 </body>
 </html>

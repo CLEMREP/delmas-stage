@@ -2,11 +2,29 @@
 
 namespace App\Models;
 
+use Carbon\Traits\Date;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/**
+ * @property int $format_id
+ * @property int $status_id
+ * @property Date $date
+ * @property bool $resend
+ * @property Date $date_resend
+ * @property int $user_id
+ * @property int $promotion_id
+ * @property int $company_id
+ * @property int $contact_id
+ * @property Contact $contact
+ * @property User $student
+ * @property Company $company
+ * @property Status $status
+ * @property Format $format
+ * @property Promotion $promotion
+ */
 class Procedure extends Model
 {
     use HasFactory;
@@ -27,6 +45,7 @@ class Procedure extends Model
         'user_id',
         'promotion_id',
         'company_id',
+        'contact_id',
     ];
 
     /**
@@ -44,9 +63,14 @@ class Procedure extends Model
     /// RELATIONSHIPS
     ///////////////
 
+    public function contact(): BelongsTo
+    {
+        return $this->belongsTo(Contact::class);
+    }
+
     public function student(): BelongsTo
     {
-        return $this->belongsTo(User::class,'user_id');
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     public function company(): BelongsTo
@@ -75,11 +99,11 @@ class Procedure extends Model
 
     public function scopeSearch(Builder $query, string $search = null): Builder
     {
-        if (!$search) {
+        if (! $search) {
             return $query;
         }
 
         return $query->with('company')
-            ->where('company.name', 'like', '%' . $search . '%');
+            ->where('company.name', 'like', '%'.$search.'%');
     }
 }

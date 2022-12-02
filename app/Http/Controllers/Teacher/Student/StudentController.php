@@ -16,8 +16,7 @@ class StudentController extends Controller
     public function __construct(
         private TeacherRepository $teacherRepository,
         private StudentRepository $studentRepository
-    )
-    {
+    ) {
     }
 
     public function index(Request $request): View
@@ -35,7 +34,7 @@ class StudentController extends Controller
         abort_if($this->teacherRepository->checkTeacherHasThisStudent($user), 403);
 
         return view('delmas.teacher.student.show', [
-            'title' => 'Fiche de l\'élève ' . $user->fullname(),
+            'title' => 'Fiche de l\'élève '.$user->fullname(),
             'student' => $user,
         ]);
     }
@@ -45,7 +44,7 @@ class StudentController extends Controller
         $teacher = loggedUser();
 
         return view('delmas.teacher.student.edit', [
-            'title' => 'Modification de l\'élève ' . $user->fullname(),
+            'title' => 'Modification de l\'élève '.$user->fullname(),
             'student' => $user,
             'promotions' => $teacher->promotions,
         ]);
@@ -58,6 +57,6 @@ class StudentController extends Controller
 
         $this->studentRepository->updateAccount($validated, $user);
 
-        return redirect(route('teacher.student.index'))->with('success', 'L\'élève ' . $user->fullname() . ' a bien été effectuée !');
+        return redirect(route('teacher.student.index'))->with('success', 'L\'élève '.$user->fullname().' a bien été effectuée !');
     }
 }

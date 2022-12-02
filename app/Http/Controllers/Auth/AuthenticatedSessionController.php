@@ -4,11 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
-use App\Models\Admin;
 use App\Models\Enums\Roles;
-use App\Models\Teacher;
-use App\Models\User;
-use App\Providers\RouteServiceProvider;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -38,7 +34,8 @@ class AuthenticatedSessionController extends Controller
 
         $user = loggedUser();
 
-        $route = match($user->role) {
+        $route = match ($user->role) {
+            Roles::SuperAdmin => 'superadmin.index',
             Roles::Admin => 'admin.index',
             Roles::Teacher => 'teacher.index',
             default => 'student.index',
