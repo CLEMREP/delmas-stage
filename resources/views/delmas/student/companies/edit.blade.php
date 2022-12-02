@@ -79,21 +79,6 @@
                     @enderror
                 </label>
             </div>
-
-            @if(!empty($contacts))
-                <div class="mt-4 flex flex-row w-full">
-                    <label class="block text-sm w-full">
-                                <span class="text-gray-700 dark:text-gray-400">
-                                  Votre contact
-                                </span>
-                        <select class="block w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 form-select focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray" name="contact_id">
-                            @foreach($contacts as $contact)
-                                <option value="{{ $contact->getKey() }}" >{{ $contact->firstname . ' ' . $contact->name }}</option>
-                            @endforeach
-                        </select>
-                    </label>
-                </div>
-            @endif
         </div>
 
 

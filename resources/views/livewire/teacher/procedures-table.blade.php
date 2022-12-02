@@ -92,6 +92,7 @@
                     <thead>
                     <tr class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
                         <th class="px-4 py-3">Étudiant</th>
+                        <th class="px-4 py-3">Promotion</th>
                         <th class="px-4 py-3">Entreprise</th>
                         <th class="px-4 py-3">Format</th>
                         <th class="px-4 py-3">Statut</th>
@@ -106,6 +107,9 @@
                         <tr class="text-gray-700 dark:text-gray-400">
                             <td class="px-4 py-3">
                                 {{ $procedure->student->fullname() }}
+                            </td>
+                            <td class="px-4 py-3">
+                                {{ $procedure->student->promotion->name }}
                             </td>
                             <td class="px-4 py-3">
                                 {{ $procedure->company->name }}
@@ -148,6 +152,7 @@
                     <thead aria-colspan="7">
                     <tr class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
                         <th class="px-4 py-3">Étudiant</th>
+                        <th class="px-4 py-3">Promotion</th>
                         <th class="px-4 py-3">Entreprise</th>
                         <th class="px-4 py-3">Format</th>
                         <th class="px-4 py-3">Statut</th>

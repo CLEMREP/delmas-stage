@@ -22,7 +22,7 @@ class StoreOrUpdatePromotionRequest extends FormRequest
     /**
      * Get the error messages for the defined validation rules.
      *
-     * @return array
+     * @return array<string, string>
      */
     public function messages()
     {
@@ -30,6 +30,7 @@ class StoreOrUpdatePromotionRequest extends FormRequest
             'name.required' => 'Le nom de la promotion doit être renseigné.',
             'name.max' => 'Le nom de la promotion doit avoir maximum :max caractères.',
             'name.string' => 'Le nom de la promotion doit être un string.',
+            'name.unique' => 'Le nom de la promotion est déjà utilisé.',
         ];
     }
 }

@@ -90,6 +90,6 @@ class Student extends Model
 
     public function fullname(): string
     {
-        return $this->user->firstname . ' ' . $this->user->lastname;
+        return $this->user->firstname.' '.$this->user->lastname;
     }
 }

@@ -36,6 +36,7 @@
                 <tr class="text-xs font-semibold tracking-wide text-left uppercase border-b border-gray-700 text-gray-400 bg-gray-800">
                     <th class="px-4 py-3">Prénom</th>
                     <th class="px-4 py-3">Nom</th>
+                    <th class="px-4 py-3">Entreprise</th>
                     <th class="px-4 py-3">Fonction</th>
                     <th class="px-4 py-3">Téléphone</th>
                     <th class="px-4 py-3">E-Mail</th>
@@ -50,6 +51,9 @@
                         </td>
                         <td class="px-4 py-3">
                             {{ $contact->name }}
+                        </td>
+                        <td class="px-4 py-3">
+                            {{ $contact->company->name }}
                         </td>
                         <td class="px-4 py-3 text-sm">
                             {{ $contact->job()->first()->name }}

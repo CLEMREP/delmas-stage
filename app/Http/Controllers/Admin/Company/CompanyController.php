@@ -3,13 +3,8 @@
 namespace App\Http\Controllers\Admin\Company;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\CompanyRequest;
 use App\Models\Company;
 use App\Repositories\CompanyRepository;
-use App\Repositories\ContactRepository;
-use App\Repositories\StudentRepository;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class CompanyController extends Controller

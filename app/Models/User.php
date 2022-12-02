@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\Enums\Roles;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -19,16 +20,15 @@ use Laravel\Sanctum\HasApiTokens;
  * @property string $email
  * @property string $password
  * @property string $phone
- * @property string $role
+ * @property Roles $role
  * @property string $address
  * @property string $city
  * @property string $zip
- * @property string mobility
  * @property string $desire
  * @property string $motivation
  * @property int $promotion_id
  * @property Promotion $promotion
- * @property Promotion $promotions
+ * @property Collection $promotions
  * @property Company $companies
  * @property Contact $contacts
  * @property Procedure $procedures
@@ -53,8 +53,8 @@ class User extends Authenticatable implements MustVerifyEmail
         'address',
         'city',
         'zip',
-        'mobility',
         'desire',
+        'mobility',
         'motivation',
         'promotion_id',
     ];
@@ -78,8 +78,8 @@ class User extends Authenticatable implements MustVerifyEmail
         'role' => Roles::class,
         'email_verified_at' => 'datetime',
         'promotion_id' => 'integer',
+        'mobility' => 'boolean',
     ];
-
 
     ////////////////
     /// RELATIONSHIPS
@@ -141,19 +141,19 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function fullname(): string
     {
-        return $this->firstname . ' ' . $this->lastname;
+        return $this->firstname.' '.$this->lastname;
     }
 
     public function scopeSearch(Builder $query, string $search = null): Builder
     {
-        if (!$search) {
+        if (! $search) {
             return $query;
         }
 
-        return $query->where('firstname', 'like', '%' . $search . '%')
-                ->orWhere('lastname', 'like', '%' . $search . '%')
-                ->orWhere('email', 'like', '%' . $search . '%')
-                ->orWhere('phone', 'like', '%' . $search . '%');
+        return $query->where('firstname', 'like', '%'.$search.'%')
+                ->orWhere('lastname', 'like', '%'.$search.'%')
+                ->orWhere('email', 'like', '%'.$search.'%')
+                ->orWhere('phone', 'like', '%'.$search.'%');
     }
 
     public function scopeStudent(Builder $query): Builder

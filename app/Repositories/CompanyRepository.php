@@ -3,8 +3,6 @@
 namespace App\Repositories;
 
 use App\Models\Company;
-use App\Models\Contact;
-use App\Models\Student;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -27,7 +25,7 @@ class CompanyRepository
             'city' => $data['city'],
             'zip' => $data['zip'],
             'user_id' => $student->getKey(),
-            'contact_id' => $data['contact_id'],
+            'promotion_id' => $student->promotion->getKey(),
         ]);
     }
 
@@ -43,21 +41,20 @@ class CompanyRepository
             'city' => $data['city'],
             'zip' => $data['zip'],
             'user_id' => $student->getKey(),
-            'contact_id' => $data['contact_id'],
+            'promotion_id' => $student->promotion->getKey(),
         ]);
-    }
-
-    public function getContactOfCompany(Company $company): Contact
-    {
-        /** @var Contact $contact */
-        $contact = $company->contact()->first();
-
-        return $contact;
     }
 
     public function getCompaniesOfStudent(User $student): Collection
     {
         return $student->companies()->get();
+    }
+
+    public function getCompaniesOfPromotion(int $promotionId): Collection
+    {
+        return $this->model->whereHas('student', function ($query) use ($promotionId) {
+            $query->where('promotion_id', $promotionId);
+        })->get();
     }
 
     public function getCompaniesOfStudentPaginated(User $student): LengthAwarePaginator
@@ -86,19 +83,43 @@ class CompanyRepository
     public function countCompaniesInSeries(User $admin): int
     {
         return $this->model->newQuery()
-            ->with(['student', 'procedure'])
-            ->whereHas('student', fn($q) => $q->whereHas('promotion', fn($q) => $q->whereIn('serie_id', $admin->series->pluck('id'))))
-            ->whereHas('procedures', fn($q) => $q->where('status_id', 3))
+            ->with(['student'])
+            ->whereHas('student', fn ($q) => $q->whereHas('promotion', fn ($q) => $q->whereIn('serie_id', $admin->series->pluck('id'))))
+            ->whereHas('procedures', fn ($q) => $q->where('status_id', 3))
             ->count();
+    }
+
+    public function checkCompanyIsInThisPromotion(User $student, int|null $companyPromotionId): bool
+    {
+        if ($companyPromotionId == $student->promotion->getKey()) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public function checkCompanyHasThisContact(int $companyId, int $contactId): bool
+    {
+        if ($contactId == $companyId) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public function findCompanyById(int $id): Company|null
+    {
+        return $this->model->find($id);
     }
 
     public function checkAdminHasThisCompany(User $admin, Company $company): bool
     {
-        return $this->model->newQuery()
+        $request = $this->model->newQuery()
             ->with(['student'])
-            ->whereHas('student', fn($q) => $q->whereHas('promotion', fn($q) => $q->whereIn('serie_id', $admin->series->pluck('id'))))
+            ->whereHas('student', fn ($q) => $q->whereHas('promotion', fn ($q) => $q->whereIn('serie_id', $admin->series->pluck('id'))))
             ->where('id', $company->getKey())
-            ->get()
-            ->isEmpty();
+            ->get();
+
+        return $request->isEmpty();
     }
 }

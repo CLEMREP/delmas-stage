@@ -27,7 +27,7 @@ class Goal extends Model
     protected $fillable = [
         'content',
         'created_at',
-        'promotion_id'
+        'promotion_id',
     ];
 
     /**

@@ -4,7 +4,6 @@ namespace App\Repositories;
 
 use App\Models\Goal;
 use App\Models\Promotion;
-use App\Models\Teacher;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -34,10 +33,9 @@ class GoalRepository
     {
         $goals = new Collection();
 
-        foreach ($promotions as $promotion)
-        {
-            foreach ($promotion->goals as $goal)
-            {
+        foreach ($promotions as $promotion) {
+            /* @phpstan-ignore-next-line */
+            foreach ($promotion->goals as $goal) {
                 $goals->add($goal);
             }
         }
@@ -48,7 +46,8 @@ class GoalRepository
     public function getGoalsByPromotionsPaginated(Collection $promotions): LengthAwarePaginator
     {
         $goals = $this->getGoalsByPromotions($promotions);
-        $currentPage = request("page") ?? 1;
+        /** @var int $currentPage */
+        $currentPage = request('page') ?? 1;
         $perPage = 10;
 
         return new LengthAwarePaginator(

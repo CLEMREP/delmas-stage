@@ -3,14 +3,9 @@
 namespace App\Http\Controllers\Teacher\Account;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\UpdateStudentAccountRequest;
 use App\Http\Requests\UpdateTeacherAccountRequest;
-use App\Models\Student;
-use App\Models\Teacher;
-use App\Repositories\StudentRepository;
 use App\Repositories\TeacherRepository;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
 class AccountController extends Controller
@@ -19,9 +14,9 @@ class AccountController extends Controller
     {
     }
 
-    public function edit(Teacher $teacher): View
+    public function edit(): View
     {
-        return view('delmas.teacher.account.account', ['title' => 'Mon compte', 'user' => Auth::user()]);
+        return view('delmas.teacher.account.account', ['title' => 'Mon compte', 'user' => loggedUser()]);
     }
 
     public function update(UpdateTeacherAccountRequest $request): RedirectResponse

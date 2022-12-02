@@ -6,7 +6,7 @@
     </h2>
 
     <div class="flex flex-col mt-4 sm:flex-row justify-between w-full">
-        <div  class="block flex flex-row text-sm mb-4 sm:mb-0 sm:w-1/2 sm:mr-3">
+        <div class="block flex flex-row text-sm mb-4 sm:mb-0 sm:w-1/2 sm:mr-3">
             <label class="w-full mr-2">
                 <span class="text-gray-700 dark:text-gray-400">Entreprise</span>
                 <input class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input" value="{{ $procedure->company()->first()->name }}" disabled>

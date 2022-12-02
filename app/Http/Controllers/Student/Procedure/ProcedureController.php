@@ -5,14 +5,12 @@ namespace App\Http\Controllers\Student\Procedure;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ProcedureRequest;
 use App\Models\Procedure;
-use App\Models\Student;
 use App\Repositories\CompanyRepository;
 use App\Repositories\FormatRepository;
 use App\Repositories\ProcedureRepository;
 use App\Repositories\StatusRepository;
 use App\Repositories\StudentRepository;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
 class ProcedureController extends Controller
@@ -28,9 +26,9 @@ class ProcedureController extends Controller
 
     public function index(): View
     {
-        $user = loggedUser();
+        $student = loggedUser();
 
-        $procedures = $this->procedureRepository->getProceduresOfStudentPaginated($user);
+        $procedures = $this->procedureRepository->getProceduresOfStudentPaginated($student);
 
         return view('delmas.student.procedures.index', [
             'title' => 'Mes démarches',
@@ -40,15 +38,11 @@ class ProcedureController extends Controller
 
     public function create(): View
     {
-        $user = loggedUser();
-
-        $companies = $this->companyRepository->getCompaniesOfStudent($user);
         $formats = $this->formatRepository->getAllFormats();
         $statuses = $this->statusRepository->getAllStatuses();
 
         return view('delmas.student.procedures.create', [
             'title' => 'Création d\'une procédure',
-            'companies' => $companies,
             'formats' => $formats,
             'statuses' => $statuses,
         ]);
@@ -56,15 +50,16 @@ class ProcedureController extends Controller
 
     public function store(ProcedureRequest $request): RedirectResponse
     {
-        $user = loggedUser();
+        $student = loggedUser();
 
         /** @var array $validated */
         $validated = $request->validated();
 
-        $validated['user_id'] = $user->getKey();
-        $validated['promotion_id'] = $user->promotion?->getKey();
+        $validated['user_id'] = $student->getKey();
+        $validated['promotion_id'] = $student->promotion->getKey();
 
-        abort_if($this->studentRepository->checkStudentHasThisCompany($user, $validated['company_id']), 404);
+        abort_if($this->companyRepository->checkCompanyIsInThisPromotion($student, $this->companyRepository->findCompanyById($validated['company_id'])?->promotion_id), 403);
+        abort_if($this->companyRepository->checkCompanyHasThisContact($validated['company_id'], $validated['contact_id']), 403);
 
         if (! is_null($this->statusRepository->findStatusById($validated)) && ! is_null($this->formatRepository->findFormatById($validated))) {
             $this->procedureRepository->createProcedure($validated);
@@ -79,24 +74,24 @@ class ProcedureController extends Controller
 
     public function show(Procedure $procedure): View
     {
-        $user = loggedUser();
+        $student = loggedUser();
 
         /** @var int $procedureId */
         $procedureId = $procedure->getKey();
 
-        abort_if($this->studentRepository->checkStudentHasThisProcedure($user, $procedureId), 404);
+        abort_if($this->studentRepository->checkStudentHasThisProcedure($student, $procedureId), 403);
 
         return view('delmas.student.procedures.show', [
-            'title' => 'Fiche de la démarche ' . $procedure->company()->first()?->name,
+            'title' => 'Fiche de la démarche '.$procedure->company()->first()?->name,
             'procedure' => $procedure,
         ]);
     }
 
     public function edit(Procedure $procedure): View
     {
-        $user = loggedUser();
+        $student = loggedUser();
 
-        $companies = $this->companyRepository->getCompaniesOfStudent($user);
+        $companies = $this->companyRepository->getCompaniesOfStudent($student);
         $formats = $this->formatRepository->getAllFormats();
         $statuses = $this->statusRepository->getAllStatuses();
 
@@ -111,14 +106,14 @@ class ProcedureController extends Controller
 
     public function update(ProcedureRequest $request, Procedure $procedure): RedirectResponse
     {
-        $user = loggedUser();
+        $student = loggedUser();
 
         /** @var array $validated */
         $validated = $request->validated();
 
-        $validated['user_id'] = $user->getKey();
+        $validated['user_id'] = $student->getKey();
 
-        abort_if($this->studentRepository->checkStudentHasThisCompany($user, $validated['company_id']), 404);
+        abort_if($this->studentRepository->checkStudentHasThisCompany($student, $validated['company_id']), 403);
 
         if (! is_null($this->statusRepository->findStatusById($validated)) && ! is_null($this->formatRepository->findFormatById($validated))) {
             $this->procedureRepository->updateProcedure($procedure, $validated);
@@ -133,15 +128,15 @@ class ProcedureController extends Controller
 
     public function destroy(Procedure $procedure): RedirectResponse
     {
-        $user = loggedUser();
+        $student = loggedUser();
 
         /** @var int $procedureId */
         $procedureId = $procedure->getKey();
 
-        abort_if($this->studentRepository->checkStudentHasThisProcedure($user, $procedureId), 404);
+        abort_if($this->studentRepository->checkStudentHasThisProcedure($student, $procedureId), 403);
 
         $this->procedureRepository->deleteProcedure($procedure);
 
-        return redirect(route('student.procedures.index'))->with('success', 'La démarche de ' . $procedure->company()->first()?->name . ' a bien été supprimée !');
+        return redirect(route('student.procedures.index'))->with('success', 'La démarche de '.$procedure->company()->first()?->name.' a bien été supprimée !');
     }
 }

@@ -11,8 +11,7 @@ class ProcedureController extends Controller
 {
     public function __construct(
         private ProcedureRepository $procedureRepository
-    )
-    {
+    ) {
     }
 
     public function index(): View

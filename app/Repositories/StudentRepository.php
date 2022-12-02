@@ -18,6 +18,10 @@ class StudentRepository
         return $this->model->all();
     }
 
+    /**
+     * @param  array<string>  $data
+     * @return User
+     */
     public function create(array $data): User
     {
         return $this->model->create([
@@ -50,7 +54,7 @@ class StudentRepository
             'mobility' => $data['mobility'] ?? true,
         ];
 
-        if (!empty($data['password'])) {
+        if (! empty($data['password'])) {
             $attributes['password'] = Hash::make($data['password']);
         }
 
@@ -80,18 +84,20 @@ class StudentRepository
 
     public function checkStudentHasThisCompany(User $student, int $companyId): bool
     {
-        return $student->companies() /** @phpstan-ignore-line */
+        $request = $student->companies()
             ->where('id', $companyId)
-            ->get()
-            ->isEmpty();
+            ->get();
+
+        return $request->isEmpty();
     }
 
     public function checkAdminHasThisStudent(User $admin, User $student): bool
     {
-        return $this->model->newQuery()
-            ->whereHas('promotion', fn($q) => $q->whereHas('serie', fn($q) => $q->whereIn('id', $admin->series->pluck('id'))))
+        $request = $this->model->newQuery()
+            ->whereHas('promotion', fn ($q) => $q->whereHas('serie', fn ($q) => $q->whereIn('id', $admin->series->pluck('id'))))
             ->where('id', $student->getKey())
-            ->get()
-            ->isEmpty();
+            ->get();
+
+        return $request->isEmpty();
     }
 }

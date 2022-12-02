@@ -1,28 +1,32 @@
 <?php
 
+use App\Http\Controllers\Admin\Account\AccountController as AdminAccountController;
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\Company\CompanyController as AdminCompanyController;
+use App\Http\Controllers\Admin\Message\MessageController as AdminMessageController;
+use App\Http\Controllers\Admin\Procedure\ProcedureController as AdminProcedureController;
+use App\Http\Controllers\Admin\Promotion\PromotionController as AdminPromotionController;
+use App\Http\Controllers\Admin\Student\StudentController as AdminStudentController;
+use App\Http\Controllers\Admin\Teacher\TeacherController as AdminTeacherController;
 use App\Http\Controllers\Student\Account\AccountController as StudentAccountController;
 use App\Http\Controllers\Student\Company\CompanyController as StudentCompanyController;
 use App\Http\Controllers\Student\Contact\ContactController as StudentContactController;
-use App\Http\Controllers\Student\StudentController;
+use App\Http\Controllers\Student\Goal\GoalController as StudentGoalController;
 use App\Http\Controllers\Student\Message\MessageController as StudentMessageController;
 use App\Http\Controllers\Student\Procedure\ProcedureController as StudentProcedureController;
-use App\Http\Controllers\Student\Goal\GoalController as StudentGoalController;
-
-use App\Http\Controllers\Teacher\Procedure\ProcedureController as TeacherProcedureController;
+use App\Http\Controllers\Student\StudentController;
+use App\Http\Controllers\SuperAdmin\Account\AccountController as SuperAdminAccountController;
+use App\Http\Controllers\SuperAdmin\Admin\AdminController as SuperAdminAdminController;
+use App\Http\Controllers\SuperAdmin\Promotion\PromotionController as SuperAdminPromotionController;
+use App\Http\Controllers\SuperAdmin\Serie\SerieController as SuperAdminSerieController;
+use App\Http\Controllers\SuperAdmin\SuperAdminController;
+use App\Http\Controllers\SuperAdmin\Teacher\TeacherController as SuperAdminTeacherController;
 use App\Http\Controllers\Teacher\Account\AccountController as TeacherAccountController;
-use App\Http\Controllers\Teacher\Student\StudentController as TeacherStudentController;
 use App\Http\Controllers\Teacher\Goal\GoalController as TeacherGoalController;
 use App\Http\Controllers\Teacher\Message\MessageController as TeacherMessageController;
+use App\Http\Controllers\Teacher\Procedure\ProcedureController as TeacherProcedureController;
+use App\Http\Controllers\Teacher\Student\StudentController as TeacherStudentController;
 use App\Http\Controllers\Teacher\TeacherController;
-
-use App\Http\Controllers\Admin\Procedure\ProcedureController as AdminProcedureController;
-use App\Http\Controllers\Admin\Account\AccountController as AdminAccountController;
-use App\Http\Controllers\Admin\Message\MessageController as AdminMessageController;
-use App\Http\Controllers\Admin\Student\StudentController as AdminStudentController;
-use App\Http\Controllers\Admin\Teacher\TeacherController as AdminTeacherController;
-use App\Http\Controllers\Admin\Promotion\PromotionController as AdminPromotionController;
-use App\Http\Controllers\Admin\Company\CompanyController as AdminCompanyController;
 use App\Models\Enums\Roles;
 use Illuminate\Support\Facades\Route;
 
@@ -83,7 +87,6 @@ Route::middleware(['auth', 'verified'])->prefix('/tableau-de-bord')->group(funct
             Route::get('/message', [StudentMessageController::class, 'index'])->name('index');
         });
     });
-
 
     Route::name('teacher.')->middleware('role:'.Roles::Teacher->value)->prefix('/professeur')->group(function () {
         Route::get('/', [TeacherController::class, 'index'])->name('index');
@@ -167,6 +170,51 @@ Route::middleware(['auth', 'verified'])->prefix('/tableau-de-bord')->group(funct
 
         Route::name('message.')->group(function () {
             Route::get('/message', [AdminMessageController::class, 'index'])->name('index');
+        });
+    });
+
+    Route::name('superadmin.')->middleware('role:'.Roles::SuperAdmin->value)->prefix('/superadmin')->group(function () {
+        Route::get('/', [SuperAdminController::class, 'index'])->name('index');
+
+        Route::name('admin.')->group(function () {
+            Route::get('/gestion-des-admins', [SuperAdminAdminController::class, 'index'])->name('index');
+            Route::get('/gestion-des-admins/creation', [SuperAdminAdminController::class, 'create'])->name('create');
+            Route::post('/gestion-des-admins/creation', [SuperAdminAdminController::class, 'store'])->name('store');
+            Route::post('/gestion-des-admins/supprimer/{user}', [SuperAdminAdminController::class, 'destroy'])->name('destroy');
+            Route::get('/gestion-des-admins/edition/{user}', [SuperAdminAdminController::class, 'edit'])->name('edit');
+            Route::post('/gestion-des-admins/edition/{user}', [SuperAdminAdminController::class, 'update'])->name('update');
+        });
+
+        Route::name('teacher.')->group(function () {
+            Route::get('/gestion-des-professeurs', [SuperAdminTeacherController::class, 'index'])->name('index');
+            Route::get('/gestion-des-professeurs/creation', [SuperAdminTeacherController::class, 'create'])->name('create');
+            Route::post('/gestion-des-professeurs/creation', [SuperAdminTeacherController::class, 'store'])->name('store');
+            Route::post('/gestion-des-professeurs/supprimer/{user}', [SuperAdminTeacherController::class, 'destroy'])->name('destroy');
+            Route::get('/gestion-des-professeurs/edition/{user}', [SuperAdminTeacherController::class, 'edit'])->name('edit');
+            Route::post('/gestion-des-professeurs/edition/{user}', [SuperAdminTeacherController::class, 'update'])->name('update');
+        });
+
+        Route::name('series.')->group(function () {
+            Route::get('/gestion-des-series', [SuperAdminSerieController::class, 'index'])->name('index');
+            Route::get('/gestion-des-series/creation', [SuperAdminSerieController::class, 'create'])->name('create');
+            Route::post('/gestion-des-series/creation', [SuperAdminSerieController::class, 'store'])->name('store');
+            Route::post('/gestion-des-series/supprimer/{serie}', [SuperAdminSerieController::class, 'destroy'])->name('destroy');
+            Route::get('/gestion-des-serie/edition/{serie}', [SuperAdminSerieController::class, 'edit'])->name('edit');
+            Route::post('/gestion-des-serie/edition/{serie}', [SuperAdminSerieController::class, 'update'])->name('update');
+        });
+
+        Route::name('promotions.')->group(function () {
+            Route::get('/gestion-des-promotions', [SuperAdminPromotionController::class, 'index'])->name('index');
+            Route::get('/gestion-des-promotions/creation', [SuperAdminPromotionController::class, 'create'])->name('create');
+            Route::post('/gestion-des-promotions/creation', [SuperAdminPromotionController::class, 'store'])->name('store');
+            Route::post('/gestion-des-promotions/supprimer/{promotion}', [SuperAdminPromotionController::class, 'destroy'])->name('destroy');
+            Route::get('/gestion-des-promotions/edition/{promotion}', [SuperAdminPromotionController::class, 'edit'])->name('edit');
+            Route::post('/gestion-des-promotions/edition/{promotion}', [SuperAdminPromotionController::class, 'update'])->name('update');
+        });
+
+        Route::name('account.')->group(function () {
+            Route::get('/mon-compte', [SuperAdminAccountController::class, 'edit'])->name('edit');
+            Route::post('/mon-compte', [SuperAdminAccountController::class, 'update'])->name('update');
         });
     });
 });

@@ -13,6 +13,11 @@ class PromotionRepository
     {
     }
 
+    public function countPromotions(): int
+    {
+        return $this->model->newQuery()->count();
+    }
+
     public function getPromotionsInSeries(User $admin): Collection
     {
         return $this->model->newQuery()
@@ -23,6 +28,7 @@ class PromotionRepository
     public function getPromotionsInSeriesPaginated(User $admin): LengthAwarePaginator
     {
         return $this->model->newQuery()
+            ->with('serie')
             ->whereIn('serie_id', $admin->series->pluck('id'))
             ->paginate(10);
     }
@@ -34,9 +40,13 @@ class PromotionRepository
 
     public function getAllPromotionsPaginated(): LengthAwarePaginator
     {
-        return $this->model->newQuery()->paginate(5);
+        return $this->model->newQuery()->paginate(12);
     }
 
+    /**
+     * @param  array<string>  $data
+     * @return Promotion
+     */
     public function createPromotion(array $data): Promotion
     {
         return $this->model->create([
@@ -45,6 +55,11 @@ class PromotionRepository
         ]);
     }
 
+    /**
+     * @param  array<string>  $data
+     * @param  Promotion  $promotion
+     * @return bool
+     */
     public function updatePromotion(array $data, Promotion $promotion): bool
     {
         return $promotion->update([
@@ -58,6 +73,10 @@ class PromotionRepository
         return $promotion->delete();
     }
 
+    /**
+     * @param  array<string>  $data
+     * @return Promotion|null
+     */
     public function findPromotionById(array $data): Promotion|null
     {
         return $this->model->all()

@@ -23,6 +23,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->foreignId('promotion_id')->constrained()->onDelete('cascade');
             $table->foreignId('company_id')->constrained()->onDelete('cascade');
+            $table->foreignId('contact_id')->constrained()->onDelete('cascade');
         });
     }
 

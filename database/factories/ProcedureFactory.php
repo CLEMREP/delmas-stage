@@ -4,7 +4,6 @@ namespace Database\Factories;
 
 use App\Models\Company;
 use App\Models\Promotion;
-use App\Models\Student;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 

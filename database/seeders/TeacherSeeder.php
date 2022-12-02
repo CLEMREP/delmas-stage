@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use App\Models\Enums\Roles;
 use App\Models\Promotion;
-use App\Models\Teacher;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 

@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Models\Admin;
 use App\Models\Enums\Roles;
 use App\Models\Serie;
 use App\Models\User;

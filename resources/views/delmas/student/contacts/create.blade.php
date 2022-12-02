@@ -57,7 +57,7 @@
             </label>
         </div>
 
-        <div class="mt-4 mb-6">
+        <div class="mt-4">
             <label class="block text-sm">
                 <span class="text-gray-700 dark:text-gray-400">Adresse électronique</span>
                 <input class="@error('email') border-red-500 @enderror block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input" value="{{ old('email') }}" name="email" placeholder="elise@my-company.com">
@@ -71,6 +71,21 @@
                 @enderror
             </label>
         </div>
+
+        @if(!empty($companies))
+            <div class="mt-4 mb-6 flex flex-row w-full">
+                <label class="block text-sm w-full">
+                    <span class="text-gray-700 dark:text-gray-400">
+                      Entreprise rattachée à ce contact
+                    </span>
+                    <select class="block w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 form-select focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray" name="company_id">
+                        @foreach($companies as $company)
+                            <option value="{{ $company->getKey() }}" >{{ $company->name }}</option>
+                        @endforeach
+                    </select>
+                </label>
+            </div>
+        @endif
 
         <div class="flex justify-end">
             <button type="submit" class="flex items-center justify-between px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">

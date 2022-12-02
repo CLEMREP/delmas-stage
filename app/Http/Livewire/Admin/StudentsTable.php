@@ -11,13 +11,16 @@ use Livewire\WithPagination;
 class StudentsTable extends Component
 {
     use WithPagination;
-    protected $paginationTheme = 'tailwind';
+
+    protected string $paginationTheme = 'tailwind';
 
     public string $search = '';
-    public string $serie = '';
-    public string $sortField = 'promotion_id';
-    public string $sortDirection = 'asc';
 
+    public string $serie = '';
+
+    public string $sortField = 'promotion_id';
+
+    public string $sortDirection = 'asc';
 
     public function resetFilters(): void
     {
@@ -30,8 +33,8 @@ class StudentsTable extends Component
 
         return view('livewire.admin.students-table', [
             'students' => User::student()->search($this->search)->with('promotion')
-                ->whereHas('promotion', fn($q) => $q->whereIn('serie_id', $admin->series->pluck('id')))
-                ->when($this->serie, fn($q) => $q->whereHas('promotion', fn($q) => $q->whereHas('serie', fn($q) => $q->where('id', $this->serie))))
+                ->whereHas('promotion', fn ($q) => $q->whereIn('serie_id', $admin->series->pluck('id')))
+                ->when($this->serie, fn ($q) => $q->whereHas('promotion', fn ($q) => $q->whereHas('serie', fn ($q) => $q->where('id', $this->serie))))
                 ->orderBy($this->sortField, $this->sortDirection)
                 ->paginate(15),
             'series' => Serie::query()

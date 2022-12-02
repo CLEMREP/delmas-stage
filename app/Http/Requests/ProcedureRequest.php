@@ -16,6 +16,7 @@ class ProcedureRequest extends FormRequest
     {
         return [
             'company_id' => ['required', 'integer'],
+            'contact_id' => ['required', 'integer'],
             'format_id' => ['required', 'integer'],
             'status_id' => ['required', 'integer'],
             'date' => ['required', 'date'],

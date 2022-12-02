@@ -4,7 +4,6 @@ namespace App\Repositories;
 
 use App\Models\Procedure;
 use App\Models\Promotion;
-use App\Models\Student;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -22,6 +21,7 @@ class ProcedureRepository
     {
         return $this->model->create([
             'company_id' => $data['company_id'],
+            'contact_id' => $data['contact_id'],
             'format_id' => $data['format_id'],
             'status_id' => $data['status_id'],
             'date' => $data['date'],
@@ -39,6 +39,7 @@ class ProcedureRepository
     {
         return $procedure->update([
             'company_id' => $data['company_id'],
+            'contact_id' => $data['contact_id'],
             'format_id' => $data['format_id'],
             'status_id' => $data['status_id'],
             'date' => $data['date'],
@@ -55,12 +56,15 @@ class ProcedureRepository
 
     public function getProceduresOfStudent(User $student): Collection
     {
-        return $student->procedures;
+        /** @var Collection $procedures */
+        $procedures = $student->procedures;
+
+        return $procedures;
     }
 
     public function getProceduresOfStudentPaginated(User $student): LengthAwarePaginator
     {
-        return $student->procedures()->paginate(10);
+        return $student->procedures()->with(['status', 'format', 'contact', 'company'])->paginate(12);
     }
 
     public function allPaginated(): LengthAwarePaginator
@@ -71,7 +75,8 @@ class ProcedureRepository
     public function getAllProceduresOfPromotionsPaginated(Collection $promotions, int $perPage): LengthAwarePaginator
     {
         $procedures = $this->getAllProceduresOfPromotions($promotions);
-        $currentPage = request("page") ?? 1;
+        /** @var int $currentPage */
+        $currentPage = request('page') ?? 1;
 
         return new LengthAwarePaginator(
             $procedures->forPage($currentPage, $perPage),
@@ -89,12 +94,10 @@ class ProcedureRepository
     {
         $procedures = new Collection();
 
-        foreach ($promotions as $promotion)
-        {
-            foreach ($promotion->students as $student)
-            {
-                foreach ($student->procedures as $procedure)
-                {
+        foreach ($promotions as $promotion) {
+            /* @phpstan-ignore-next-line */
+            foreach ($promotion->students as $student) {
+                foreach ($student->procedures as $procedure) {
                     $procedures->add($procedure);
                 }
             }
@@ -142,8 +145,7 @@ class ProcedureRepository
     {
         return $this->model->newQuery()
             ->with('student')
-            ->whereHas('student', fn($q) => $q->whereHas('promotion', fn($q) => $q->whereIn('serie_id', $admin->series->pluck('id'))))
-            ->get()
+            ->whereHas('student', fn ($q) => $q->whereHas('promotion', fn ($q) => $q->whereIn('serie_id', $admin->series->pluck('id'))))
             ->count();
     }
 
@@ -151,7 +153,7 @@ class ProcedureRepository
     {
         return $this->model->newQuery()
             ->with('student')
-            ->whereHas('student', fn($q) => $q->whereHas('promotion', fn($q) => $q->whereIn('serie_id', $admin->series->pluck('id'))))
+            ->whereHas('student', fn ($q) => $q->whereHas('promotion', fn ($q) => $q->whereIn('serie_id', $admin->series->pluck('id'))))
             ->paginate($perPage);
     }
 }

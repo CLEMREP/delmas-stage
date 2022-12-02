@@ -30,7 +30,6 @@
                 <thead aria-colspan="7">
                 <tr class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
                     <th class="px-4 py-3">Nom</th>
-                    <th class="px-4 py-3">Contact</th>
                     <th class="px-4 py-3">Adresse</th>
                     <th class="px-4 py-3">Code Postal</th>
                     <th class="px-4 py-3">Ville</th>
@@ -43,9 +42,6 @@
                     <tr class="text-gray-700 dark:text-gray-400">
                         <td class="px-4 py-3">
                             {{ $company->name }}
-                        </td>
-                        <td class="px-4 py-3 text-sm">
-                            {{ $company->contact()->first()->firstname . ' ' . $company->contact()->first()->name }}
                         </td>
                         <td class="px-4 py-3 text-sm">
                             {{ $company->address }}

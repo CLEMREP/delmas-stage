@@ -9,18 +9,18 @@
     "src": "resources/js/init-alpine.js",
     "isEntry": true
   },
-  "resources/css/multiform.css": {
-    "file": "assets/multiform.072b67d5.css",
-    "src": "resources/css/multiform.css",
-    "isEntry": true
-  },
   "resources/css/style.css": {
     "file": "assets/style.c1a1ba10.css",
     "src": "resources/css/style.css",
     "isEntry": true
   },
+  "resources/css/multiform.css": {
+    "file": "assets/multiform.072b67d5.css",
+    "src": "resources/css/multiform.css",
+    "isEntry": true
+  },
   "resources/css/app.css": {
-    "file": "assets/app.2aa84323.css",
+    "file": "assets/app.c740815f.css",
     "src": "resources/css/app.css",
     "isEntry": true
   },

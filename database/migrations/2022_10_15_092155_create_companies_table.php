@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('city');
             $table->string('zip');
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->foreignId('contact_id')->constrained('contacts')->onDelete('cascade');
+            $table->foreignId('promotion_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }

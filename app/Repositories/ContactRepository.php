@@ -3,7 +3,6 @@
 namespace App\Repositories;
 
 use App\Models\Contact;
-use App\Models\Student;
 use App\Models\User;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
@@ -26,6 +25,7 @@ class ContactRepository
             'email' => $data['email'],
             'job_id' => $data['job_id'],
             'user_id' => $data['user_id'],
+            'company_id' => $data['company_id'],
         ]);
     }
 
@@ -41,6 +41,7 @@ class ContactRepository
             'email' => $data['email'],
             'job_id' => $data['job_id'],
             'user_id' => $data['user_id'],
+            'company_id' => $data['company_id'],
         ]);
     }
 
