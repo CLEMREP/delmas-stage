@@ -45,7 +45,7 @@ class StudentRepository
             'firstname' => $data['firstname'],
             'email' => $data['email'],
             'phone' => $data['phone'] ?? '',
-            'promotion_id' => $data['promotion_id'] ?? '',
+            'promotion_id' => $data['promotion_id'] ?? null,
             'zip' => $data['zip'] ?? '',
             'city' => $data['city'] ?? '',
             'address' => $data['address'] ?? '',

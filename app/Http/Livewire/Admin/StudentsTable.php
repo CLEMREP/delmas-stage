@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Admin;
 
+use App\Models\Enums\Roles;
 use App\Models\Serie;
 use App\Models\User;
 use Illuminate\View\View;
@@ -32,9 +33,11 @@ class StudentsTable extends Component
         $admin = loggedUser();
 
         return view('livewire.admin.students-table', [
-            'students' => User::student()->search($this->search)->with('promotion')
+            'students' => User::search($this->search)->with('promotion')
                 ->whereHas('promotion', fn ($q) => $q->whereIn('serie_id', $admin->series->pluck('id')))
                 ->when($this->serie, fn ($q) => $q->whereHas('promotion', fn ($q) => $q->whereHas('serie', fn ($q) => $q->where('id', $this->serie))))
+                ->orWhere('promotion_id', null)
+                ->where('role', Roles::Student)
                 ->orderBy($this->sortField, $this->sortDirection)
                 ->paginate(15),
             'series' => Serie::query()

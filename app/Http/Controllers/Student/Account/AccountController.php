@@ -27,7 +27,7 @@ class AccountController extends Controller
 
         $user = loggedUser();
 
-        $validated['promotion_id'] = $user->promotion_id;
+        $validated['promotion_id'] = $user->promotion_id ?? null;
 
         $this->studentRepository->updateAccount($validated, $user);
 
