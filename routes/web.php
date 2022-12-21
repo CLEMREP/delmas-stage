@@ -44,7 +44,7 @@ Route::middleware(['auth', 'verified'])->prefix('/tableau-de-bord')->group(funct
     Route::name('student.')->middleware('role:'.Roles::Student->value)->group(function () {
         Route::get('/', [StudentController::class, 'index'])->name('index');
 
-        Route::name('procedures.')->group(function () {
+        Route::name('procedures.')->middleware('hasPromotion')->group(function () {
             Route::get('/mes-demarches', [StudentProcedureController::class, 'index'])->name('index');
             Route::get('/mes-demarches/creation', [StudentProcedureController::class, 'create'])->name('create');
             Route::post('/mes-demarches/creation', [StudentProcedureController::class, 'store'])->name('store');
@@ -54,7 +54,7 @@ Route::middleware(['auth', 'verified'])->prefix('/tableau-de-bord')->group(funct
             Route::post('/mes-demarches/edition/{procedure}', [StudentProcedureController::class, 'update'])->name('update');
         });
 
-        Route::name('companies.')->group(function () {
+        Route::name('companies.')->middleware('hasPromotion')->group(function () {
             Route::get('/mes-entreprises', [StudentCompanyController::class, 'index'])->name('index');
             Route::get('/mes-entreprises/creation', [StudentCompanyController::class, 'create'])->name('create');
             Route::post('/mes-entreprises/creation', [StudentCompanyController::class, 'store'])->name('store');
@@ -64,7 +64,7 @@ Route::middleware(['auth', 'verified'])->prefix('/tableau-de-bord')->group(funct
             Route::post('/mes-entreprises/edition/{company}', [StudentCompanyController::class, 'update'])->name('update');
         });
 
-        Route::name('contacts.')->group(function () {
+        Route::name('contacts.')->middleware('hasPromotion')->group(function () {
             Route::get('/mes-contacts', [StudentContactController::class, 'index'])->name('index');
             Route::get('/mes-contacts/creation', [StudentContactController::class, 'create'])->name('create');
             Route::post('/mes-contacts/creation', [StudentContactController::class, 'store'])->name('store');
@@ -79,11 +79,11 @@ Route::middleware(['auth', 'verified'])->prefix('/tableau-de-bord')->group(funct
             Route::post('/mon-compte', [StudentAccountController::class, 'update'])->name('update');
         });
 
-        Route::name('goals.')->group(function () {
+        Route::name('goals.')->middleware('hasPromotion')->group(function () {
             Route::get('/objectifs', [StudentGoalController::class, 'index'])->name('index');
         });
 
-        Route::name('message.')->group(function () {
+        Route::name('message.')->middleware('hasPromotion')->group(function () {
             Route::get('/message', [StudentMessageController::class, 'index'])->name('index');
         });
     });
