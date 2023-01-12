@@ -16,14 +16,10 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             SerieSeeder::class,
-            SuperAdminSeeder::class,
             PromotionSeeder::class,
             FormatSeeder::class,
             StatusSeeder::class,
             JobSeeder::class,
-            AdminSeeder::class,
-            TeacherSeeder::class,
-            StudentSeeder::class,
         ]);
     }
 }

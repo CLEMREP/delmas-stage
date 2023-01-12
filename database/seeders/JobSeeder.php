@@ -14,7 +14,7 @@ class JobSeeder extends Seeder
      */
     public function run()
     {
-        $names = ['Directeur', 'Directeur Ressources Humaines', 'Ressources Humaines', 'Sécrétaire', 'Développeur', 'Autres'];
+        $names = ['Directeur', 'Directeur Ressources Humaines', 'Ressources Humaines', 'Sécrétaire', 'Développeur', 'CTO', 'Autres'];
 
         foreach ($names as $name) {
             Job::factory([

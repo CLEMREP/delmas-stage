@@ -91,7 +91,9 @@ class StudentController extends Controller
     {
         $admin = loggedUser();
 
-        abort_if($this->studentRepository->checkAdminHasThisStudent($admin, $user), 403);
+        if (!empty($user->promotion_id)) {
+            abort_if($this->studentRepository->checkAdminHasThisStudent($admin, $user), 403);
+        }
 
         $this->studentRepository->delete($user);
 

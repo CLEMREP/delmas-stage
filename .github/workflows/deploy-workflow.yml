@@ -1,0 +1,13 @@
+on:
+  pull_request:
+    jobs:
+      deploy:
+        runs-on: ubuntu-latest
+        steps:
+          - uses: actions/checkout@v2
+          - uses: actions/ssh-action@v0
+            with:
+              host: ${{ secrets.HOST }}
+              username: ${{ secrets.USERNAME }}
+              private-key: ${{ secrets.PRIVATE_KEY }}
+              script: deploy.sh

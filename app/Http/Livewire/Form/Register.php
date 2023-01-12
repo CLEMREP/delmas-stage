@@ -9,6 +9,7 @@ use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules;
 use Illuminate\View\View;
 use Livewire\Component;
@@ -18,13 +19,15 @@ class Register extends Component
 {
     public int $currentStep = 1;
 
-    public bool $mobility = false;
+    public int $mobility = 0;
 
     public string $firstname = '';
 
     public string $lastname = '';
 
     public string $email = '';
+
+    public string $phone = '';
 
     public string $password = '';
 
@@ -72,6 +75,12 @@ class Register extends Component
             'address' => 'nullable|string',
             'city' => 'nullable|string',
             'zip' => 'nullable|regex:/^[0-9]{5}(?:-[0-9]{4})?$/',
+            'phone' => ['required', 'string', 'regex:/^(?:(?:\+|00)33|0)\s*[1-9](?:[\s.-]*\d{2}){4}$/', Rule::unique('users', 'phone')],
+        ], $messages = [
+            'phone.required' => 'Le numéro de téléphone est requis.',
+            'phone.regex' => 'Le numéro de téléphone doit être dans un format valide (ex: 06 00 00 00 00)',
+            'phone.unique' => 'Le numéro de téléphone est déjà utilisé.',
+            'zip.regex' => 'Le code postal doit être dans un format valide (ex: 75000)',
         ]);
 
         $this->currentStep = 3;
@@ -89,6 +98,7 @@ class Register extends Component
             'firstname' => $this->firstname,
             'lastname' => $this->lastname,
             'email' => $this->email,
+            'phone' => $this->phone,
             'password' => Hash::make($this->password),
             'role' => Roles::Student,
             'address' => $this->address,

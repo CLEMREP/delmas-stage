@@ -119,6 +119,12 @@
             </div>
         </div>
 
+        <div class="w-full mb-6">
+            <x-label for="phone" :value="__('Téléphone')" />
+
+            <x-input id="phone" wire:model="phone" class="block mt-1 w-full" type="phone" placeholder="06 81 62 54 42" name="phone" :value="old('phone')" required />
+        </div>
+
         <div class="mt-10">
             <x-button wire:click="secondStepSubmit">
                 {{ __('Suivant') }}
@@ -132,8 +138,8 @@
 
 
             <select id="mobility" wire:model="mobility" class="w-full text-base py-2 border-4 rounded p-2 border-gray-300 focus:outline-none focus:border-indigo-500" name="mobility">
-                <option value="1" {{ old('mobility') == 1 ? 'selected' : '' }}>Véhiculé</option>
-                <option value="0" {{ old('mobility') == 0 ? 'selected' : '' }}>Non véhiculé</option>
+                <option value="1">Véhiculé</option>
+                <option value="0" {{ $mobility == 0 ? 'selected' : '' }}>Non véhiculé</option>
             </select>
         </div>
 
@@ -141,14 +147,14 @@
             <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                 <x-label for="motivation" :value="__('Motivation')" />
 
-                <textarea id="motivation" wire:model="motivation"  name="motivation" :value="old('motivation')"  placeholder="Écrivez vos motivations ..." class="w-full text-base py-2 border-4 rounded p-2 border-gray-300 focus:outline-none focus:border-indigo-500">
+                <textarea id="motivation" wire:model="motivation"  name="motivation" :value="{{ old('motivation') }}"  placeholder="Écrivez vos motivations ..." class="w-full text-base py-2 border-4 rounded p-2 border-gray-300 focus:outline-none focus:border-indigo-500">
 
                 </textarea>
             </div>
             <div class="w-full md:w-1/2 px-3">
                 <x-label for="desire" :value="__('Critères d\'offres')" />
 
-                <textarea id="desire" wire:model="desire" name="desire" :value="old('desire')"  placeholder="Écrivez vos critères concernant les offres d'emplois, faites pas les difficiles ..." class="w-full text-base py-2 border-4 rounded p-2 border-gray-300 focus:outline-none focus:border-indigo-500">
+                <textarea id="desire" wire:model="desire" name="desire" :value="{{ old('desire') }}"  placeholder="Écrivez vos critères concernant les offres d'emplois, faites pas les difficiles ..." class="w-full text-base py-2 border-4 rounded p-2 border-gray-300 focus:outline-none focus:border-indigo-500">
 
                 </textarea>
             </div>
