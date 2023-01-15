@@ -4,6 +4,7 @@
           Entreprise
         </span>
         <select wire:model="companyId" class="@error('company_id') border-red-500 @enderror block w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 form-select focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray" name="company_id">
+            <option value="0">Sélectionnez une entreprise</option>
             @foreach($companies as $company)
                 <option value="{{ $company->getKey() }}">{{ $company->name }}</option>
             @endforeach
@@ -20,9 +21,9 @@
 
     @if(count($contacts) > 0)
     <label class="block text-sm mb-4 sm:mb-0 sm:w-1/2">
-    <span class="text-gray-700 dark:text-gray-400">
-      Contacts
-    </span>
+        <span class="text-gray-700 dark:text-gray-400">
+          Contacts
+        </span>
         <select class="@error('contact_id') border-red-500 @enderror block w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 form-select focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray" name="contact_id">
             @foreach($contacts as $contact)
                 <option value="{{ $contact->getKey() }}">{{ $contact->fullname() }}</option>
@@ -37,6 +38,21 @@
         </div>
         @enderror
     </label>
+    @endif
+    @if($companyId != 0 && count($contacts) == 0)
+        <div class="block text-sm mb-4 sm:mb-0 sm:w-1/2">
+            <span class="text-gray-700 dark:text-gray-400">
+              Contacts
+            </span>
+            <div class="mt-2 flex flex-row items-center font-medium text-red-500 mb-2">
+                <svg class="w-5 h-5 inline mr-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>
+                <div>
+                    Aucun contact n'est associé à cette entreprise, vous devez créer un contact avant de pouvoir créer une procédure.
+                </div>
+            </div>
+
+        </div>
+
     @endif
 </div>
 

@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\Company;
+use App\Models\Contact;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -100,7 +101,7 @@ class CompanyRepository
 
     public function checkCompanyHasThisContact(int $companyId, int $contactId): bool
     {
-        if ($contactId == $companyId) {
+        if (Contact::find($contactId)->company->getKey() == $companyId) {
             return false;
         }
 

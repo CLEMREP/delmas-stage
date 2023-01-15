@@ -39,7 +39,7 @@ class AuthServiceProvider extends ServiceProvider
             return (new MailMessage)
                 ->subject('Delmas-Stage - Réinitialisation de votre mot de passe')
                 ->line('Veuillez cliquer sur le bouton ci-dessous pour réinitialiser votre mot de passe.')
-                ->action('Réinitialiser mon mot de passe', $url)
+                ->action('Réinitialiser mon mot de passe', env('APP_URL') . $url)
                 ->line('Le lien de réinitialisation du mot de passe expirera dans 60 minutes.')
                 ->line('Si vous n\'avez pas demandé de réinitialisation de mot de passe, aucune autre action n\'est requise.');
         });

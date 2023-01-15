@@ -10,7 +10,7 @@ use Livewire\Component;
 
 class CreateProcedure extends Component
 {
-    public int $companyId = 1;
+    public int $companyId = 0;
 
     public Collection $contacts;
 
