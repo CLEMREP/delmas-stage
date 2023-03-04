@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Models\Student;
+use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
@@ -56,6 +57,7 @@ class UpdateStudentAccountRequest extends FormRequest
             'password.min' => 'Le mot de passe doit faire minimum :min charactères.',
             'zip.regex' => 'Le code postale doit être au bon format (XXXXX).',
             'phone.regex' => 'Le téléphone doit être au bon format (XX XX XX XX XX XX).',
+            'phone.unique' => 'Le téléphone est déjà utilisé.',
             'password.confirmed' => 'Les mots de passe doivent correspondre.',
         ];
     }
