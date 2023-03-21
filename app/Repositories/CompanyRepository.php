@@ -7,6 +7,7 @@ use App\Models\Contact;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\DB;
 
 class CompanyRepository
 {
@@ -83,11 +84,12 @@ class CompanyRepository
 
     public function countCompaniesInSeries(User $admin): int
     {
-        return $this->model->newQuery()
-            ->with(['student'])
-            ->whereHas('student', fn ($q) => $q->whereHas('promotion', fn ($q) => $q->whereIn('serie_id', $admin->series->pluck('id'))))
-            ->whereHas('procedures', fn ($q) => $q->where('status_id', 3))
-            ->count();
+        $result = DB::select("CALL count_hire_companies(?, ?)", [
+            str_replace(["[", "]"], "'", $admin->series->pluck('id')),
+            '3',
+        ]);
+
+        return $result[0]->{'count(*)'};
     }
 
     public function checkCompanyIsInThisPromotion(User $student, int|null $companyPromotionId): bool

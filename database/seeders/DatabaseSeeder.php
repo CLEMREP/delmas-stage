@@ -20,6 +20,8 @@ class DatabaseSeeder extends Seeder
             FormatSeeder::class,
             StatusSeeder::class,
             JobSeeder::class,
+            AdminSeeder::class,
+            StudentSeeder::class,
         ]);
     }
 }
