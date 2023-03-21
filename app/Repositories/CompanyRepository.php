@@ -84,8 +84,16 @@ class CompanyRepository
 
     public function countCompaniesInSeries(User $admin): int
     {
+        $seriesIds = $admin->series->pluck('id');
+        $seriesIdsJson = [];
+
+        foreach ($seriesIds as $id)
+        {
+            $seriesIdsJson['ids'][] = ['id' => $id];
+        }
+
         $result = DB::select("CALL count_hire_companies(?, ?)", [
-            str_replace(["[", "]"], "'", $admin->series->pluck('id')),
+            json_encode($seriesIdsJson),
             '3',
         ]);
 

@@ -18,21 +18,12 @@ return new class extends Migration
             DROP PROCEDURE IF EXISTS `count_hire_companies`;
             CREATE PROCEDURE count_hire_companies(IN seriesId TEXT, IN statusCode INT)
             BEGIN
-                DECLARE i INT DEFAULT 1;
-                DECLARE id_str VARCHAR(255);
-
                 CREATE TABLE IF NOT EXISTS `temps` (
-                    `id` CHAR(3) PRIMARY KEY
+                    `json_col` JSON
                 );
                 
-                SET seriesId = REPLACE(seriesId, '''', '');
-
-                WHILE i <= LENGTH(seriesId)-1 DO
-                    SET id_str = SUBSTRING_INDEX(SUBSTRING_INDEX(seriesId, ',', i), ',', -1);
-                    SET i = i + 1;
-                    INSERT INTO temps (id) VALUES (id_str);
-                END WHILE;
-
+                INSERT INTO `temps` (`json_col`) VALUES (seriesId);
+                
                 select count(*) from `companies`
                 where exists (
                     select * from `users`
@@ -40,7 +31,7 @@ return new class extends Migration
                     and exists (
                         select * from `promotions`
                         where `users`.`promotion_id` = `promotions`.`id`
-                        and `serie_id` in (SELECT id FROM `temps`))) and exists (
+                        and `serie_id` in (SELECT ids.* FROM `temps`, JSON_TABLE(json_col, '$.ids[*]' COLUMNS (id INT PATH '$.id')) ids))) and exists (
                             select * from `procedures`
                             where `companies`.`id` = `procedures`.`company_id`
                             and `status_id` = statusCode);
